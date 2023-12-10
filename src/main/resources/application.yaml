@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: portal-sgf
+
+  config:
+    import: optional:aws-parameterstore:/sgf/default-dev/
+
+  datasource:
+    url: jdbc:mariadb://coatl-database-1.cfxr0kgjwyqw.us-west-2.rds.amazonaws.com:3306/sac
+    username: ''
+    password: ''
+    driver-class-name: org.mariadb.jdbc.Driver
+
+  autoconfigure:
+    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+
+  jpa:
+    properties:
+      hibernate:
+        types:
+          print:
+            banner: false
+        dialect: org.hibernate.dialect.MariaDBDialect
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    database: mysql
+    open-in-view: true
+
+aws:
+  cognito:
+    common:
+      region: 'us-west-2'
+      accessKey: ''
+      secretKey: ''
+    pool:
+      clientId: ''
+      identityPoolUrl: ''
+      userPoolId: ''
+
+  s3:
+    uploads-bucket: sgf-dev-upload
+
+  paramstore:
+    prefix: /sgf
+    name: default-dev
+    enabled: true
+    profileSeparator: _
+
+springdoc:
+  api-docs:
+    enabled: true
+    path: /swagger/api-docs
+  swagger-ui:
+    enabled: true
+    path: /doc/swagger-ui.html
+  cache:
+    disabled: true
+  default-produces-media-type: application/json
+  packages-to-scan:
+    - com.coatl.sac.controller
+  paths-to-match:
+    - /**
