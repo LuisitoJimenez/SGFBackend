@@ -1,5 +1,7 @@
 package com.coatl.sac.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,7 @@ import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.entity.ClubTeamEntity;
 import com.coatl.sac.entity.PlayerEntity;
 import com.coatl.sac.entity.TeamEntity;
+import com.coatl.sac.entity.TeamGenderEntity;
 import com.coatl.sac.entity.TeamPlayerEntity;
 import com.coatl.sac.entity.TeamSubEntity;
 import com.coatl.sac.json.UserName;
@@ -23,6 +26,7 @@ import com.coatl.sac.model.TeamDTO;
 import com.coatl.sac.repository.ClubRepository;
 import com.coatl.sac.repository.ClubTeamRepository;
 import com.coatl.sac.repository.PlayerRepository;
+import com.coatl.sac.repository.TeamGenderRepository;
 import com.coatl.sac.repository.TeamPlayerRepository;
 import com.coatl.sac.repository.TeamRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -47,6 +51,8 @@ public class TeamService {
     private final TeamPlayerRepository teamPlayerRepository;
 
     private final TeamSubRepository teamSubRepository;
+
+    private final TeamGenderRepository teamGenderRepository;
 
     public List<Map<String, Object>> getTeamList() {
         ObjectMapper mapper = new ObjectMapper();
@@ -89,6 +95,8 @@ public class TeamService {
 
             saveTeamSub(team.getId(), teamDTO.getSubId());
 
+            saveTeamGender(team.getId(), teamDTO.getGenderId());
+
             return new WebServiceResponse(true, "Team created successfully");
         } catch (Exception e) {
             return new WebServiceResponse(false, e.getMessage());
@@ -109,6 +117,14 @@ public class TeamService {
         teamSubEntity.setSubId(subId);
         teamSubEntity.setUserCreated(1);
         teamSubRepository.save(teamSubEntity);
+    }
+
+    private void saveTeamGender(Integer teamId, Integer genderId) {
+        TeamGenderEntity teamGender = new TeamGenderEntity();
+        teamGender.setTeamId(teamId);
+        teamGender.setGenderId(genderId);
+        teamGender.setUserCreated(1);
+        teamGenderRepository.save(teamGender);
     }
 
     @Transactional
@@ -187,5 +203,36 @@ public class TeamService {
 
     public Map<String, Object> getTeamById(Integer teamId) {
         return teamRepository.getTeamById(teamId);
+    }
+
+    @Transactional
+    public WebServiceResponse deleteTeamById(Integer teamId) {
+
+        try {
+            TeamEntity team = teamRepository.findByIdAndDeletedIsNull(teamId)
+                    .orElseThrow(() -> new RuntimeException("Team not found"));
+            team.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            teamRepository.save(team);
+
+            ClubTeamEntity clubTeam = clubTeamRespository.findByTeamIdAndDeletedIsNull(teamId)
+                    .orElseThrow(() -> new RuntimeException("Team not associated with a club"));
+            clubTeam.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            clubTeamRespository.save(clubTeam);
+
+            TeamGenderEntity teamGender = teamGenderRepository.findByTeamIdAndDeletedIsNull(teamId)
+                    .orElseThrow(() -> new RuntimeException("Team not associated with a Gender"));
+            teamGender.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            teamGenderRepository.save(teamGender);
+
+            TeamSubEntity teamSub = teamSubRepository.findByTeamIdAndDeletedIsNull(teamId)
+                    .orElseThrow(() -> new RuntimeException("Team not associated with a Sub"));
+            teamSub.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            teamSubRepository.save(teamSub);
+            return new WebServiceResponse(true, "Team deleted successfully");
+        } catch (Exception e) {
+            // TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+            return new WebServiceResponse(false, e.getMessage());
+        }
+
     }
 }
