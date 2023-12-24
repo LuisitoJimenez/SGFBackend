@@ -16,18 +16,40 @@ public interface TeamRepository extends JpaRepository<TeamEntity, Integer> {
 
     @Query(value = """
             SELECT
+                team.id AS teamId,
+                team.name AS name,
+                team.coach AS coach,
+                gender.id AS genderId,
+                sub.id AS subId,
+                club.id AS clubId
+            FROM teams team
+                INNER JOIN teams_subs teamSub ON team.id = teamSub.team_id AND teamSub.deleted IS NULL
+                INNER JOIN subs sub ON teamSub.sub_id = sub.id AND sub.deleted IS NULL
+                INNER JOIN teams_genders teamGender ON team.id = teamGender.team_id AND teamGender.deleted IS NULL
+                INNER JOIN genders gender ON teamGender.gender_id = gender.id
+                INNER JOIN clubs_teams clubTeam ON team.id = clubTeam.team_id AND clubTeam.deleted IS NULL
+                INNER JOIN clubs club ON clubTeam.club_id = club.id
+            WHERE team.deleted IS NULL
+                                """, nativeQuery = true)
+    List<Map<String, Object>> getTeamList();
+
+    @Query(value = """
+            SELECT
                 team.id,
                 team.name,
                 team.coach,
-                gender.name AS gender,
-                age.name AS age
+                gender.id AS genderId,
+                sub.id AS subId,
+                club.id AS clubId
             FROM teams team
-            LEFT JOIN teams_genders teamGender ON team.id = teamGender.team_id AND teamGender.deleted IS NULL
-            LEFT JOIN genders gender ON teamGender.gender_id = gender.id
-            LEFT JOIN teams_ages teamAge ON team.id = teamAge.team_id AND teamAge.deleted IS NULL
-            LEFT JOIN ages age ON teamAge.age_id = age.id
-            WHERE team.deleted IS NULL
+                INNER JOIN teams_subs teamSub ON team.id = teamSub.team_id AND teamSub.deleted IS NULL
+                INNER JOIN subs sub ON teamSub.sub_id = sub.id AND sub.deleted IS NULL
+                INNER JOIN teams_genders teamGender ON team.id = teamGender.team_id AND teamGender.deleted IS NULL
+                INNER JOIN genders gender ON teamGender.gender_id = gender.id
+                INNER JOIN clubs_teams clubTeam ON team.id = clubTeam.team_id AND clubTeam.deleted IS NULL
+                INNER JOIN clubs club ON clubTeam.club_id = club.id
+            WHERE team.deleted IS NULL AND team.id = :pTeamId
                         """, nativeQuery = true)
-    List<Map<String, Object>> getTeamList();
+    Map<String, Object> getTeamById(Integer pTeamId);
 
 }
