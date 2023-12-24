@@ -1,5 +1,6 @@
 package com.coatl.sac.entity;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.hibernate.annotations.Type;
@@ -40,5 +41,25 @@ public class TeamEntity {
         inverseJoinColumns = @JoinColumn(name = "user_id")
     )
     private List<UserEntity> users;
+
+    @Basic
+    @Column(name = "user_created")
+    @JsonIgnore
+    private Integer userCreated;
+    
+    @Basic
+    @Column(name = "created")
+    @JsonIgnore
+    private Timestamp created;
+
+    @Basic
+    @Column(name = "user_deleted")
+    @JsonIgnore
+    private Integer userDeleted;
+
+    @Basic
+    @Column(name = "deleted")
+    @JsonIgnore
+    private Timestamp deleted;
 
 }
