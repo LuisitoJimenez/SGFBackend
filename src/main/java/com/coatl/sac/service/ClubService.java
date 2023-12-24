@@ -31,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 public class ClubService {
 
     @Autowired
-
     private ClubRepository clubRepository;
 
     private final Environment environment;
