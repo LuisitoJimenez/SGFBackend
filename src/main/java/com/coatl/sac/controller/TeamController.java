@@ -1,6 +1,7 @@
 package com.coatl.sac.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,6 +79,14 @@ public class TeamController {
        @PathVariable Integer teamId
     ) {
         return new WebServiceResponse(teamService.getTeamById(teamId));
+    }
+
+    @DeleteMapping("/{teamId}")
+    @Operation(summary = "Delete team by id")
+    public WebServiceResponse deleteTeamById (
+       @PathVariable Integer teamId
+    ) {
+        return teamService.deleteTeamById(teamId);
     }
 
 }
