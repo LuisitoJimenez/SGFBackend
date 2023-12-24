@@ -124,7 +124,7 @@ public class PlayerService {
         return Map.of("id", playerEntity.getId());
     }
 
-    public PlayerGenderEntity savePlayerGender(Integer userId, Integer genderId) {
+    private PlayerGenderEntity savePlayerGender(Integer userId, Integer genderId) {
         PlayerGenderEntity playerGenderEntity = new PlayerGenderEntity();
         playerGenderEntity.setPlayerId(userId);
         playerGenderEntity.setGenderId(genderId);
@@ -134,7 +134,7 @@ public class PlayerService {
         return playerGenderEntity;
     }
 
-    public UserPlayerEntity saveUserPlayer(Integer userId, Integer playerId) {
+    private UserPlayerEntity saveUserPlayer(Integer userId, Integer playerId) {
         UserPlayerEntity userPlayerEntity = new UserPlayerEntity();
         userPlayerEntity.setUserId(userId);
         userPlayerEntity.setPlayerId(playerId);
