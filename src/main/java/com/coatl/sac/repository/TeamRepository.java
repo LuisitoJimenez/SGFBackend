@@ -2,11 +2,13 @@ package com.coatl.sac.repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import com.coatl.sac.entity.ClubTeamEntity;
 import com.coatl.sac.entity.TeamEntity;
 
 @Repository
@@ -35,7 +37,7 @@ public interface TeamRepository extends JpaRepository<TeamEntity, Integer> {
 
     @Query(value = """
             SELECT
-                team.id,
+                team.id AS teamId,
                 team.name,
                 team.coach,
                 gender.id AS genderId,
@@ -51,5 +53,7 @@ public interface TeamRepository extends JpaRepository<TeamEntity, Integer> {
             WHERE team.deleted IS NULL AND team.id = :pTeamId
                         """, nativeQuery = true)
     Map<String, Object> getTeamById(Integer pTeamId);
+
+    Optional<TeamEntity> findByIdAndDeletedIsNull(Integer teamId);
 
 }
