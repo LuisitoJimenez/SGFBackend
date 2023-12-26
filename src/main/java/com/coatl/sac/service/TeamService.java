@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.entity.ClubTeamEntity;
-import com.coatl.sac.entity.PlayerEntity;
+//import com.coatl.sac.entity.PlayerEntity;
 import com.coatl.sac.entity.TeamEntity;
 import com.coatl.sac.entity.TeamGenderEntity;
 import com.coatl.sac.entity.TeamPlayerEntity;
@@ -23,7 +23,7 @@ import com.coatl.sac.entity.TeamSubEntity;
 import com.coatl.sac.json.UserName;
 import com.coatl.sac.model.TeamAssignmentDTO;
 import com.coatl.sac.model.TeamDTO;
-import com.coatl.sac.repository.ClubRepository;
+//import com.coatl.sac.repository.ClubRepository;
 import com.coatl.sac.repository.ClubTeamRepository;
 import com.coatl.sac.repository.PlayerRepository;
 import com.coatl.sac.repository.TeamGenderRepository;
@@ -39,10 +39,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TeamService {
 
-    @Autowired
-    private TeamRepository teamRepository;
+    // @Autowired
+    private final TeamRepository teamRepository;
 
-    private final ClubRepository clubRepository;
+    // private final ClubRepository clubRepository;
 
     private final ClubTeamRepository clubTeamRespository;
 
@@ -130,11 +130,13 @@ public class TeamService {
     @Transactional
     public WebServiceResponse addTitularPlayerToTeam(TeamAssignmentDTO teamAssignmentDTO) {
         try {
-            TeamEntity team = teamRepository.findById(teamAssignmentDTO.getTeamId())
+
+            teamRepository.findById(teamAssignmentDTO.getTeamId())
                     .orElseThrow(() -> new RuntimeException("Team not found"));
 
             for (Integer playerId : teamAssignmentDTO.getPlayersIds()) {
-                PlayerEntity player = playerRepository.findById(playerId)
+
+                playerRepository.findById(playerId)
                         .orElseThrow(() -> new RuntimeException("Player not found"));
 
                 Optional<TeamPlayerEntity> teamPlayerEntity = teamPlayerRepository
@@ -164,11 +166,12 @@ public class TeamService {
     public WebServiceResponse addSubstitutePlayerToTeam(TeamAssignmentDTO teamAssignmentDTO) {
         try {
 
-            TeamEntity team = teamRepository.findById(teamAssignmentDTO.getTeamId())
+            teamRepository.findById(teamAssignmentDTO.getTeamId())
                     .orElseThrow(() -> new RuntimeException("Team not found"));
 
             for (Integer playerId : teamAssignmentDTO.getPlayersIds()) {
-                PlayerEntity player = playerRepository.findById(playerId)
+
+                playerRepository.findById(playerId)
                         .orElseThrow(() -> new RuntimeException("Player not found"));
 
                 Optional<TeamPlayerEntity> teamPlayerEntity = teamPlayerRepository
