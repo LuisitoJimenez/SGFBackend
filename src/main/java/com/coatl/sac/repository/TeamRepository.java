@@ -18,12 +18,12 @@ public interface TeamRepository extends JpaRepository<TeamEntity, Integer> {
 
     @Query(value = """
             SELECT
-                team.id AS teamId,
+                team.id AS id,
                 team.name AS name,
                 team.coach AS coach,
-                gender.id AS genderId,
-                sub.id AS subId,
-                club.id AS clubId
+                gender.name AS gender,
+                sub.name AS sub,
+                club.name AS club
             FROM teams team
                 INNER JOIN teams_subs teamSub ON team.id = teamSub.team_id AND teamSub.deleted IS NULL
                 INNER JOIN subs sub ON teamSub.sub_id = sub.id AND sub.deleted IS NULL
@@ -37,12 +37,12 @@ public interface TeamRepository extends JpaRepository<TeamEntity, Integer> {
 
     @Query(value = """
             SELECT
-                team.id AS teamId,
+                team.id AS id,
                 team.name,
                 team.coach,
-                gender.id AS genderId,
-                sub.id AS subId,
-                club.id AS clubId
+                gender.id AS gender,
+                sub.id AS sub,
+                club.name AS club
             FROM teams team
                 INNER JOIN teams_subs teamSub ON team.id = teamSub.team_id AND teamSub.deleted IS NULL
                 INNER JOIN subs sub ON teamSub.sub_id = sub.id AND sub.deleted IS NULL
