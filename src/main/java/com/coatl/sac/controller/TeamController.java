@@ -3,6 +3,7 @@ package com.coatl.sac.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,16 @@ public class TeamController {
        @RequestBody TeamDTO teamDto,
        @RequestHeader Integer clubId
     ) {
-        return new WebServiceResponse(teamService.createTeam(teamDto, clubId));
+        return teamService.createTeam(teamDto, clubId);
+    }
+
+    @PatchMapping("")
+    @Operation(summary = "Update team")
+    public WebServiceResponse updateTeam (
+       @RequestHeader Integer teamId,
+       @RequestBody TeamDTO teamDto
+    ) {
+        return teamService.updateTeam(teamDto, teamId);
     }
 
     @PostMapping("/titulars")
