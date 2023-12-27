@@ -31,7 +31,6 @@ import lombok.RequiredArgsConstructor;
 public class ClubService {
 
     @Autowired
-
     private ClubRepository clubRepository;
 
     private final Environment environment;
@@ -45,8 +44,7 @@ public class ClubService {
 
     @Transactional
     public Map<String, Object> createClub(ClubDTO clubDto) {
-        System.out.println(clubDto.getName());
-        System.out.println(clubRepository.existsDeletedClubByName(clubDto.getName()));
+
         if (clubRepository.existsDeletedClubByName(clubDto.getName()) == 1) {
             throw new RuntimeException("Club already exists");
         }

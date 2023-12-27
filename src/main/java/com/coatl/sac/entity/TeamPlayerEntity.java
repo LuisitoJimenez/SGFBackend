@@ -1,42 +1,45 @@
 package com.coatl.sac.entity;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Basic;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @Entity
-@Table(name = "teams")
-public class TeamEntity {
-
+@Table(name = "teams_players")
+public class TeamPlayerEntity {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
     private Integer id;
+
+    @Basic
+    @Column(name = "team_id", nullable = false)
+    private Integer teamId;
+
+    @Basic
+    @Column(name = "player_Id", nullable = false)
+    private Integer playerId;
+
+    @Basic
+    @Column(name = "position_id")
+    private Integer positionId;
     
     @Basic
-    @Column(name = "name", nullable = false)
-    private String name;
-
-    @Basic
-    @Column(name = "coach", nullable = false)
-    private String coach;
-
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "users_teams",
-        joinColumns = @JoinColumn(name = "team_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<UserEntity> users;
+    @Column(name = "type_player_id", nullable = false)
+    private Integer typePlayerId;
 
     @Basic
     @Column(name = "user_created")
@@ -57,5 +60,4 @@ public class TeamEntity {
     @Column(name = "deleted")
     @JsonIgnore
     private Timestamp deleted;
-
 }
