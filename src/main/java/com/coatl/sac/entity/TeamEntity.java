@@ -3,13 +3,10 @@ package com.coatl.sac.entity;
 import java.sql.Timestamp;
 import java.util.List;
 
-import org.hibernate.annotations.Type;
-
-import com.coatl.sac.json.UserName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,10 +25,9 @@ public class TeamEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @JsonIgnore
-    @Type(JsonType.class)
-    @Column(name = "coach", columnDefinition ="longtext")
-    private UserName coach;
+    @Basic
+    @Column(name = "coach", nullable = false)
+    private String coach;
 
     @JsonIgnore
     @ManyToMany
