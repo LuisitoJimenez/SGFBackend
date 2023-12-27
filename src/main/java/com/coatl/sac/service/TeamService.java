@@ -15,6 +15,8 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.entity.ClubTeamEntity;
+import com.coatl.sac.entity.GenderEntity;
+import com.coatl.sac.entity.SubsEntity;
 //import com.coatl.sac.entity.PlayerEntity;
 import com.coatl.sac.entity.TeamEntity;
 import com.coatl.sac.entity.TeamGenderEntity;
@@ -25,10 +27,13 @@ import com.coatl.sac.model.TeamAssignmentDTO;
 import com.coatl.sac.model.TeamDTO;
 //import com.coatl.sac.repository.ClubRepository;
 import com.coatl.sac.repository.ClubTeamRepository;
+import com.coatl.sac.repository.GenderRepository;
 import com.coatl.sac.repository.PlayerRepository;
+import com.coatl.sac.repository.SubsRepository;
 import com.coatl.sac.repository.TeamGenderRepository;
 import com.coatl.sac.repository.TeamPlayerRepository;
 import com.coatl.sac.repository.TeamRepository;
+import com.coatl.sac.repository.TeamSubRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -54,8 +59,12 @@ public class TeamService {
 
     private final TeamGenderRepository teamGenderRepository;
 
+    private final GenderRepository genderRepository;
+
+    private final SubsRepository subsRepository;
+
     public List<Map<String, Object>> getTeamList() {
-        ObjectMapper mapper = new ObjectMapper();
+/*         ObjectMapper mapper = new ObjectMapper();
         List<Map<String, Object>> teamList = teamRepository.getTeamList();
         List<Map<String, Object>> result = new ArrayList<>();
         for (Map<String, Object> team : teamList) {
@@ -70,7 +79,8 @@ public class TeamService {
             }
             result.add(newTeam);
         }
-        return result;
+        return result; */
+        return teamRepository.getTeamList();
 
     }
 
@@ -79,9 +89,10 @@ public class TeamService {
         try {
 
             TeamEntity team = new TeamEntity();
-            team.setName(teamDTO.getName());
-            team.setCoach(new UserName(teamDTO.getCoach().getFirst(), teamDTO.getCoach().getLast(),
-                    teamDTO.getCoach().getSecondLast()));
+            team.setName(teamDTO.getTeamName());
+            team.setCoach(teamDTO.getCoachName());
+            /* team.setCoach(new UserName(teamDTO.getCoach().getFirst(), teamDTO.getCoach().getLast(),
+                    teamDTO.getCoach().getSecondLast())); */
             team.setUserCreated(1);
             teamRepository.save(team);
 
@@ -89,6 +100,13 @@ public class TeamService {
 
             if (clubTeam.isPresent()) {
                 throw new RuntimeException("Team already assigned to club");
+            }
+
+            Optional<GenderEntity> gender = genderRepository.findById(teamDTO.getGenderId());            
+            Optional<SubsEntity> sub = subsRepository.findById(teamDTO.getSubId());
+
+            if (!gender.isPresent() || !sub.isPresent()) {
+                throw new RuntimeException("Gender or Sub not found");
             }
 
             saveClubTeam(team.getId(), clubId);
@@ -238,4 +256,43 @@ public class TeamService {
         }
 
     }
+
+    @Transactional
+    public WebServiceResponse updateTeam (TeamDTO teamDTO, Integer teamId) {
+        try {
+            TeamEntity team = teamRepository.findById(teamId)
+                    .orElseThrow(() -> new RuntimeException("Team not found"));
+
+            team.setName(teamDTO.getTeamName());
+            team.setCoach(teamDTO.getCoachName());
+            team.setUserCreated(1);            
+            teamRepository.save(team);
+
+            Optional<GenderEntity> gender = genderRepository.findById(teamDTO.getGenderId());            
+            Optional<SubsEntity> sub = subsRepository.findById(teamDTO.getSubId());
+
+            if (!gender.isPresent() || !sub.isPresent()) {
+                throw new RuntimeException("Gender or Sub not found");
+            }
+
+            TeamGenderEntity teamGender = teamGenderRepository.findByTeamIdAndDeletedIsNull(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
+            teamGender.setGenderId(teamDTO.getGenderId());
+            teamGender.setUserCreated(1);
+            teamGenderRepository.save(teamGender);
+
+            TeamSubEntity teamSub = teamSubRepository.findByTeamIdAndDeletedIsNull(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
+            teamSub.setSubId(teamDTO.getSubId());
+            teamSub.setUserCreated(1);
+            teamSubRepository.save(teamSub);
+
+            //saveTeamSub(team.getId(), teamDTO.getSubId());
+
+            //saveTeamGender(team.getId(), teamDTO.getGenderId());
+
+            return new WebServiceResponse(true, "Team updated successfully");
+        } catch (Exception e) {
+            return new WebServiceResponse(false, e.getMessage());
+        }
+    }
+
 }
