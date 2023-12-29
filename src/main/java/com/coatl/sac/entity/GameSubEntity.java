@@ -1,16 +1,9 @@
 package com.coatl.sac.entity;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
-//import org.hibernate.annotations.Type;
-
-//import com.coatl.sac.json.UserName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-//import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,34 +17,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "games")
-public class GameEntity {
-    
-    @Id
+@Table(name = "games_subs")
+public class GameSubEntity {
+
+     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Basic
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "sub_id", nullable = false)
+    private Integer subId;
 
     @Basic
-    @Column(name = "game_time", nullable = false)
-    private Time gameTime;
-
-    @Basic
-    @Column(name = "game_date", nullable = false)
-    private Date gameDate;
-
-    @Basic
-    @Column(name = "field", nullable = false)
-    private String field;
-/*     @JsonIgnore
-    @Type(JsonType.class)
-    @Column(name = "referee", columnDefinition = "longtext")
-    private UserName referee; */
-
+    @Column(name = "game_id", nullable = false)
+    private Integer gameId;
+ 
     @Basic
     @Column(name = "user_created")
     @JsonIgnore

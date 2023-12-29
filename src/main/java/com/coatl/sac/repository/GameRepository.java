@@ -1,5 +1,7 @@
 package com.coatl.sac.repository;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +14,7 @@ import com.coatl.sac.entity.GameEntity;
 
 public interface GameRepository extends JpaRepository<GameEntity, Integer>{
 
-    boolean existsByGameDateTime(LocalDateTime gameDateTime);
+    boolean existsByGameDate(Date gameDate);
 
     boolean existsByName(String name);
 

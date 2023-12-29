@@ -6,9 +6,9 @@ import java.util.Map;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.coatl.sac.entity.SubsEntity;
+import com.coatl.sac.entity.SubEntity;
 
-public interface SubsRepository extends JpaRepository<SubsEntity, Integer> {
+public interface SubRepository extends JpaRepository<SubEntity, Integer> {
     
     @Query(value = """
                   SELECT

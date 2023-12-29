@@ -1,16 +1,9 @@
 package com.coatl.sac.entity;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
-//import org.hibernate.annotations.Type;
-
-//import com.coatl.sac.json.UserName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-//import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -24,39 +17,35 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "games")
-public class GameEntity {
+@Table(name = "subs")
+public class SubEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id", nullable = false, unique = true )
     private Integer id;
 
     @Basic
+    @JsonIgnore
     @Column(name = "name", nullable = false)
     private String name;
 
     @Basic
-    @Column(name = "game_time", nullable = false)
-    private Time gameTime;
+    @JsonIgnore
+    @Column(name = "min_age", nullable = false)
+    private Integer minAge;
 
     @Basic
-    @Column(name = "game_date", nullable = false)
-    private Date gameDate;
+    @JsonIgnore
+    @Column(name = "max_age", nullable = false)
+    private Integer maxAge;
 
-    @Basic
-    @Column(name = "field", nullable = false)
-    private String field;
-/*     @JsonIgnore
-    @Type(JsonType.class)
-    @Column(name = "referee", columnDefinition = "longtext")
-    private UserName referee; */
 
     @Basic
     @Column(name = "user_created")
     @JsonIgnore
     private Integer userCreated;
-    
+
     @Basic
     @Column(name = "created")
     @JsonIgnore
@@ -71,5 +60,4 @@ public class GameEntity {
     @Column(name = "deleted")
     @JsonIgnore
     private Timestamp deleted;
-
 }

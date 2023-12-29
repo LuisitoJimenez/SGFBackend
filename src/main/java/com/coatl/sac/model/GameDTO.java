@@ -1,5 +1,7 @@
 package com.coatl.sac.model;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.coatl.sac.json.UserName;
@@ -19,12 +21,15 @@ import lombok.Setter;
 public class GameDTO {
 
     private String name;
-    @JsonProperty("referee")
-    private UserName referee;
-    private LocalDateTime gameDateTime;
+    private String field;
+/*     @JsonProperty("referee")
+    private UserName referee; */
+    private Date gameDate;
     private Integer userCreated;
     private Integer userDeleted;
     private LocalDateTime created;
     private LocalDateTime deleted;
+    private Integer genderId;
+    private Integer subId;
 
 }

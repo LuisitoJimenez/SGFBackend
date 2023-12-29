@@ -17,35 +17,27 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "subs")
-public class SubsEntity {
+@Table(name = "games_genders")
+public class GameGenderEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true )
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Basic
-    @JsonIgnore
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "game_id", nullable = false)
+    private Integer gameId;
 
     @Basic
-    @JsonIgnore
-    @Column(name = "min_age", nullable = false)
-    private Integer minAge;
-
-    @Basic
-    @JsonIgnore
-    @Column(name = "max_age", nullable = false)
-    private Integer maxAge;
-
-
+    @Column(name = "gender_id", nullable = false)
+    private Integer genderId;
+ 
     @Basic
     @Column(name = "user_created")
     @JsonIgnore
     private Integer userCreated;
-
+    
     @Basic
     @Column(name = "created")
     @JsonIgnore
@@ -60,4 +52,5 @@ public class SubsEntity {
     @Column(name = "deleted")
     @JsonIgnore
     private Timestamp deleted;
+
 }

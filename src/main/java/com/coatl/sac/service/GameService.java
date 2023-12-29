@@ -1,21 +1,30 @@
 package com.coatl.sac.service;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.entity.GameEntity;
+import com.coatl.sac.entity.GameGenderEntity;
+import com.coatl.sac.entity.GameSubEntity;
 import com.coatl.sac.entity.GameTeamEntity;
+import com.coatl.sac.entity.GenderEntity;
+import com.coatl.sac.entity.SubEntity;
 import com.coatl.sac.json.UserName;
 import com.coatl.sac.model.GameDTO;
+import com.coatl.sac.repository.GameGenderRepository;
 import com.coatl.sac.repository.GameRepository;
 import com.coatl.sac.repository.GameTeamRepository;
+import com.coatl.sac.repository.GenderRepository;
+import com.coatl.sac.repository.SubRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,23 +41,49 @@ public class GameService {
     @Autowired
     private GameTeamRepository gameTeamRepository;
 
+    @Autowired
+    private GameGenderRepository gameGenderRepository;
+
+    @Autowired
+    private GenderRepository genderRepository;
+
+    @Autowired
+    private SubRepository subsRepository;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Transactional
     public WebServiceResponse createGame(GameDTO gameDto) {
-        if (gameRepository.existsByGameDateTime(gameDto.getGameDateTime())) {
+        try {
+        if (gameRepository.existsByGameDate(gameDto.getGameDate())) {
             return new WebServiceResponse(false, "There is a game with that date and time");
         } else if (gameRepository.existsByName(gameDto.getName())) {
             return new WebServiceResponse(false, "There is a game with that name");
-        } else {
-            GameEntity gameEntity = new GameEntity();
-            gameEntity.setName(gameDto.getName());
-            gameEntity.setReferee(new UserName(gameDto.getReferee().getFirst(), gameDto.getReferee().getLast(), gameDto.getReferee().getSecondLast()));
-            gameEntity.setGameDateTime(Timestamp.valueOf(gameDto.getGameDateTime()));
-            gameEntity.setUserCreated(gameDto.getUserCreated());
-            gameRepository.save(gameEntity);
-            return new WebServiceResponse(true, "Game created");
         }
+            GameEntity game = new GameEntity();
+            game.setName(gameDto.getName());
+            game.setField(gameDto.getField());
+            game.setGameDate(gameDto.getGameDate());
+            game.setUserCreated(gameDto.getUserCreated());
+            gameRepository.save(game);
+
+            Optional<GenderEntity> gender = genderRepository.findById(gameDto.getGenderId());            
+            Optional<SubEntity> sub = subsRepository.findById(gameDto.getSubId());
+
+            if (!gender.isPresent() || !sub.isPresent()) {
+                throw new RuntimeException("Gender or Sub not found");
+            }
+
+            saveGameSub(game.getId(), gameDto.getSubId());
+
+            saveGameGender(game.getId(), gameDto.getGenderId());
+
+            return new WebServiceResponse(true, "Game created");
+
+        } catch (Exception e) {
+            return new WebServiceResponse(false, e.getMessage());
+        }
+        
     }
 
     @Transactional
@@ -100,4 +135,22 @@ public class GameService {
         }
         return modifiedGames;
     }
+
+    private GameGenderEntity saveGameGender(Integer gameId, Integer genderId) {
+        GameGenderEntity gameGenderEntity = new GameGenderEntity();
+        gameGenderEntity.setGameId(gameId);
+        gameGenderEntity.setGenderId(genderId);
+        gameGenderEntity.setUserCreated(1);
+        gameGenderRepository.save(gameGenderEntity);
+        return gameGenderEntity;
+    }
+
+    private GameSubEntity saveGameSub (Integer gameId, Integer subId) {
+        GameSubEntity gameSubEntity = new GameSubEntity();
+        gameSubEntity.setGameId(gameId);
+        gameSubEntity.setSubId(subId);
+        gameSubEntity.setUserCreated(1);
+        return gameSubEntity;
+    }
+
 }
