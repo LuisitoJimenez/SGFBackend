@@ -14,16 +14,19 @@ import org.springframework.stereotype.Service;
 import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.entity.GameEntity;
 import com.coatl.sac.entity.GameGenderEntity;
+import com.coatl.sac.entity.GameRefereeEntity;
 import com.coatl.sac.entity.GameSubEntity;
 import com.coatl.sac.entity.GameTeamEntity;
 import com.coatl.sac.entity.GenderEntity;
+import com.coatl.sac.entity.RefereeEntity;
 import com.coatl.sac.entity.SubEntity;
-import com.coatl.sac.json.UserName;
+//import com.coatl.sac.json.UserName;
 import com.coatl.sac.model.GameDTO;
 import com.coatl.sac.repository.GameGenderRepository;
 import com.coatl.sac.repository.GameRepository;
 import com.coatl.sac.repository.GameTeamRepository;
 import com.coatl.sac.repository.GenderRepository;
+import com.coatl.sac.repository.RefereeRepository;
 import com.coatl.sac.repository.SubRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,6 +53,9 @@ public class GameService {
     @Autowired
     private SubRepository subsRepository;
 
+    @Autowired
+    private RefereeRepository refereeRepository;
+
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Transactional
@@ -64,7 +70,7 @@ public class GameService {
             game.setName(gameDto.getName());
             game.setField(gameDto.getField());
             game.setGameDate(gameDto.getGameDate());
-            game.setUserCreated(gameDto.getUserCreated());
+            game.setUserCreated(1);
             gameRepository.save(game);
 
             Optional<GenderEntity> gender = genderRepository.findById(gameDto.getGenderId());            
@@ -77,6 +83,14 @@ public class GameService {
             saveGameSub(game.getId(), gameDto.getSubId());
 
             saveGameGender(game.getId(), gameDto.getGenderId());
+
+            Optional<RefereeEntity> referee = refereeRepository.findById(gameDto.getRefereeId());
+
+            if (!referee.isPresent()) {
+                throw new RuntimeException("Referee not found");
+            }
+
+            saveGameReferee(game.getId(), gameDto.getRefereeId());
 
             return new WebServiceResponse(true, "Game created");
 
@@ -151,6 +165,14 @@ public class GameService {
         gameSubEntity.setSubId(subId);
         gameSubEntity.setUserCreated(1);
         return gameSubEntity;
+    }
+
+    private GameRefereeEntity saveGameReferee(Integer gameId, Integer refereeId) {
+        GameRefereeEntity gameRefereeEntity = new GameRefereeEntity();
+        gameRefereeEntity.setGameId(gameId);
+        gameRefereeEntity.setRefereeId(refereeId);
+        gameRefereeEntity.setUserCreated(1);
+        return gameRefereeEntity;
     }
 
 }
