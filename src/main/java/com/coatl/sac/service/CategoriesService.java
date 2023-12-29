@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.coatl.sac.repository.SubsRepository;
+import com.coatl.sac.repository.SubRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CategoriesService {
 
-    private final SubsRepository subsRepository;
+    private final SubRepository subsRepository;
 
     public List<Map<String, Object>> getSubList() {
         List<Map<String, Object>> allSubs = subsRepository.getSubsList();
