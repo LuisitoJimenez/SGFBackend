@@ -16,7 +16,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.entity.ClubTeamEntity;
 import com.coatl.sac.entity.GenderEntity;
-import com.coatl.sac.entity.SubsEntity;
+import com.coatl.sac.entity.SubEntity;
 //import com.coatl.sac.entity.PlayerEntity;
 import com.coatl.sac.entity.TeamEntity;
 import com.coatl.sac.entity.TeamGenderEntity;
@@ -29,7 +29,7 @@ import com.coatl.sac.model.TeamDTO;
 import com.coatl.sac.repository.ClubTeamRepository;
 import com.coatl.sac.repository.GenderRepository;
 import com.coatl.sac.repository.PlayerRepository;
-import com.coatl.sac.repository.SubsRepository;
+import com.coatl.sac.repository.SubRepository;
 import com.coatl.sac.repository.TeamGenderRepository;
 import com.coatl.sac.repository.TeamPlayerRepository;
 import com.coatl.sac.repository.TeamRepository;
@@ -61,7 +61,7 @@ public class TeamService {
 
     private final GenderRepository genderRepository;
 
-    private final SubsRepository subsRepository;
+    private final SubRepository subsRepository;
 
     public List<Map<String, Object>> getTeamList() {
 /*         ObjectMapper mapper = new ObjectMapper();
@@ -103,7 +103,7 @@ public class TeamService {
             }
 
             Optional<GenderEntity> gender = genderRepository.findById(teamDTO.getGenderId());            
-            Optional<SubsEntity> sub = subsRepository.findById(teamDTO.getSubId());
+            Optional<SubEntity> sub = subsRepository.findById(teamDTO.getSubId());
 
             if (!gender.isPresent() || !sub.isPresent()) {
                 throw new RuntimeException("Gender or Sub not found");
@@ -269,7 +269,7 @@ public class TeamService {
             teamRepository.save(team);
 
             Optional<GenderEntity> gender = genderRepository.findById(teamDTO.getGenderId());            
-            Optional<SubsEntity> sub = subsRepository.findById(teamDTO.getSubId());
+            Optional<SubEntity> sub = subsRepository.findById(teamDTO.getSubId());
 
             if (!gender.isPresent() || !sub.isPresent()) {
                 throw new RuntimeException("Gender or Sub not found");
