@@ -1,13 +1,16 @@
 package com.coatl.sac.entity;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
-import org.hibernate.annotations.Type;
+//import org.hibernate.annotations.Type;
 
-import com.coatl.sac.json.UserName;
+//import com.coatl.sac.json.UserName;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import io.hypersistence.utils.hibernate.type.json.JsonType;
+//import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,13 +37,20 @@ public class GameEntity {
     private String name;
 
     @Basic
-    @Column(name = "play_date", nullable = false)
-    private Timestamp gameDateTime; 
-    
-    @JsonIgnore
+    @Column(name = "game_time", nullable = false)
+    private Time gameTime;
+
+    @Basic
+    @Column(name = "game_date", nullable = false)
+    private Date gameDate;
+
+    @Basic
+    @Column(name = "field", nullable = false)
+    private String field;
+/*     @JsonIgnore
     @Type(JsonType.class)
     @Column(name = "referee", columnDefinition = "longtext")
-    private UserName referee;
+    private UserName referee; */
 
     @Basic
     @Column(name = "user_created")
