@@ -2,8 +2,8 @@ package com.coatl.sac.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
+/* import java.util.ArrayList;
+import java.util.HashMap; */
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,7 +22,7 @@ import com.coatl.sac.entity.TeamEntity;
 import com.coatl.sac.entity.TeamGenderEntity;
 import com.coatl.sac.entity.TeamPlayerEntity;
 import com.coatl.sac.entity.TeamSubEntity;
-import com.coatl.sac.json.UserName;
+//import com.coatl.sac.json.UserName;
 import com.coatl.sac.model.TeamAssignmentDTO;
 import com.coatl.sac.model.TeamDTO;
 //import com.coatl.sac.repository.ClubRepository;
@@ -34,9 +34,9 @@ import com.coatl.sac.repository.TeamGenderRepository;
 import com.coatl.sac.repository.TeamPlayerRepository;
 import com.coatl.sac.repository.TeamRepository;
 import com.coatl.sac.repository.TeamSubRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
+/* import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper; */
 
 import lombok.RequiredArgsConstructor;
 

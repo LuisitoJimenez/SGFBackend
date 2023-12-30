@@ -1,16 +1,16 @@
 package com.coatl.sac.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coatl.sac.dto.WebServiceResponse;
-import com.coatl.sac.entity.RoleEntity;
+//import com.coatl.sac.entity.RoleEntity;
 import com.coatl.sac.entity.UserEntity;
 import com.coatl.sac.entity.UserTeamEntity;
 import com.coatl.sac.entity.UserTeamRoleEntity;
 import com.coatl.sac.json.UserName;
 import com.coatl.sac.model.UserDTO;
-import com.coatl.sac.repository.GenderRepository;
+//import com.coatl.sac.repository.GenderRepository;
 import com.coatl.sac.repository.RoleRepository;
 import com.coatl.sac.repository.UserRepository;
 import com.coatl.sac.repository.UserTeamRepository;
@@ -18,13 +18,13 @@ import com.coatl.sac.repository.UserTeamRoleRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserResponse;
-import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminUpdateUserAttributesRequest;
+/* import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminGetUserResponse;
+import software.amazon.awssdk.services.cognitoidentityprovider.model.AdminUpdateUserAttributesRequest; */
 
 import com.amazonaws.services.cognitoidp.model.AdminCreateUserResult;
 import com.amazonaws.services.cognitoidp.model.AdminDisableUserResult;
 import com.amazonaws.services.cognitoidp.model.AdminUpdateUserAttributesResult;
-import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutRequest;
+//import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutRequest;
 import com.amazonaws.services.cognitoidp.model.AdminUserGlobalSignOutResult;
 
 import jakarta.transaction.Transactional;
@@ -56,7 +56,7 @@ public class UserService {
     private final RoleRepository roleRepository;
 
     // @Autowired
-    private final GenderRepository genderRepository;
+    //private final GenderRepository genderRepository;
 
     private final CognitoService cognitoService;
 
@@ -269,7 +269,7 @@ public class UserService {
     public WebServiceResponse assigRole(Integer userId, Integer roleId, Integer teamId) {
         UserEntity userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        RoleEntity roleEntity = roleRepository.findById(roleId)
+        /* RoleEntity roleEntity = */ roleRepository.findById(roleId)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
         UserTeamEntity userTeamEntity = userTeamRepository.findByUserIdAndTeamId(userEntity.getId(), teamId)
                 .orElseThrow(() -> new RuntimeException("Team with user not found"));

@@ -9,13 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 import io.awspring.cloud.s3.S3Resource;
 import io.awspring.cloud.s3.S3Template;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+//import lombok.extern.log4j.Log4j2;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectResponse;
 
 @Service
-@Log4j2
+//@Log4j2
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class S3Service {
