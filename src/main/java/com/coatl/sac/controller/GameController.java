@@ -1,7 +1,9 @@
 package com.coatl.sac.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +31,16 @@ public class GameController {
         return new WebServiceResponse(gameService.getGameList());
     }
 
+    @GetMapping("/{gameId}")
+    @Operation(summary = "Get game by id")
+    public WebServiceResponse getGameById(
+        @PathVariable Integer gameId
+    ) {
+        return gameService.getGameById(gameId);
+    }
+
     @PostMapping("")
+    @Operation(summary = "Create game")
     public WebServiceResponse createGame(
         @RequestBody GameDTO gameDto
     ) {
@@ -37,6 +48,7 @@ public class GameController {
     }
 
     @PostMapping("/{gameId}/team/{teamId}")
+    @Operation(summary = "Assign team to game")
     public WebServiceResponse assignGameTeam (
         @PathVariable Integer gameId,
         @PathVariable Integer teamId
@@ -45,10 +57,37 @@ public class GameController {
     }
 
     @GetMapping("/{gameId}/teams")
+    @Operation(summary = "Get game teams")
     public WebServiceResponse getGameTeams (
         @PathVariable Integer gameId
     ) {
         return new WebServiceResponse(gameService.getGameTeams(gameId));
+    }
+
+    @DeleteMapping("/{gameId}")
+    @Operation(summary = "Delete game")
+    public WebServiceResponse deleteGame (
+        @PathVariable Integer gameId
+    ) {
+        return gameService.deleteGame(gameId);
+    }
+
+    @PatchMapping("/{gameId}")
+    @Operation(summary = "Update game")
+    public WebServiceResponse updateGame (
+        @RequestBody GameDTO gameDTO,
+        @PathVariable Integer gameId
+    ) {
+        return gameService.updateGame(gameDTO, gameId);
+    }
+
+    @DeleteMapping("/{gameId}/team/{teamId}")
+    @Operation(summary = "Delete game team")
+    public WebServiceResponse deleteGameTeam (
+        @PathVariable Integer gameId,
+        @PathVariable Integer teamId
+    ) {
+        return gameService.deleteGameTeam(gameId, teamId);
     }
 
 }
