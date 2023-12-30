@@ -2,12 +2,12 @@ package com.coatl.sac.model;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+//import java.time.LocalDate;
+//import java.time.LocalDateTime;
 
-import com.coatl.sac.json.UserName;
+//import com.coatl.sac.json.UserName;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+//import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
