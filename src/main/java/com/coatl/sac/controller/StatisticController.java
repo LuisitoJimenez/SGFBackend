@@ -16,7 +16,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/statistics")
-@Tag(name = "Statistic", description = "Statistic management")
+@Tag(name = "Statistics", description = "Statistic management")
 public class StatisticController {
 
     @Autowired
