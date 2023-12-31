@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coatl.sac.dto.WebServiceResponse;
-import com.coatl.sac.entity.GameEntity;
+//import com.coatl.sac.entity.GameEntity;
 import com.coatl.sac.entity.StatisticEntity;
 import com.coatl.sac.entity.StatisticGameEntity;
 import com.coatl.sac.model.StatisticDTO;
@@ -47,9 +47,9 @@ public class StatisticService {
 
     @Transactional
     public WebServiceResponse assignStatisticGame(Integer statisticId, Integer gameId) {
-        StatisticEntity statisticEntity = statisticRepository.findById(statisticId)
+        /* StatisticEntity statisticEntity =  */statisticRepository.findById(statisticId)
                 .orElseThrow(() -> new RuntimeException("Statistic not found"));
-        GameEntity gameEntity = gameRepository.findById(gameId).orElseThrow(() -> new RuntimeException("Game not found"));
+       /*  GameEntity gameEntity =  */gameRepository.findById(gameId).orElseThrow(() -> new RuntimeException("Game not found"));
         StatisticGameEntity statisticGameEntity = new StatisticGameEntity();
         statisticGameEntity.setStatisticId(statisticId);
         statisticGameEntity.setGameId(gameId);

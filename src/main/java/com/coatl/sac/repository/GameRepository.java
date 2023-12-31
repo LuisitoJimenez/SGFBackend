@@ -30,9 +30,9 @@ public interface GameRepository extends JpaRepository<GameEntity, Integer> {
                 game.game_date,
                 game.game_time,
                 game.field,
-                sub.id AS subId,
-                gender.id AS genderId,
-                referee.id AS refereeId
+                sub.name AS sub,
+                gender.name AS gender,
+                user.name AS referee
             FROM games game
                 INNER JOIN games_subs gameSub ON game.id = gameSub.game_id AND gameSub.deleted IS NULL
                 INNER JOIN subs sub ON gameSub.sub_id = sub.id AND sub.deleted IS NULL
@@ -40,16 +40,18 @@ public interface GameRepository extends JpaRepository<GameEntity, Integer> {
                 INNER JOIN genders gender ON gameGender.gender_id = gender.id AND gender.deleted IS NULL
                 INNER JOIN games_referees gameReferee ON game.id = gameReferee.game_id AND gameReferee.deleted IS NULL
                 INNER JOIN referees referee ON gameReferee.referee_id = referee.id AND referee.deleted IS NULL
+                INNER JOIN users_referees userReferee ON referee.id = userReferee.referee_id AND userReferee.deleted IS NULL
+                INNER JOIN users user ON userReferee.user_id = user.id AND user.deleted IS NULL
             WHERE game.deleted IS NULL
-                    """, nativeQuery = true)
+                            """, nativeQuery = true)
     List<Map<String, Object>> getGameList();
 
     @Query(value = """
             SELECT
                 game.id,
                 game.name,
-                game.game_date,
-                game.game_time,
+                game.game_date AS gameDate,
+                game.game_time AS gameTime,
                 game.field,
                 sub.id AS subId,
                 gender.id AS genderId,

@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coatl.sac.dto.WebServiceResponse;
-import com.coatl.sac.entity.TeamEntity;
+//import com.coatl.sac.entity.TeamEntity;
 import com.coatl.sac.entity.TournamentEntity;
 import com.coatl.sac.entity.TournamentGameEntity;
 import com.coatl.sac.model.TournamentDTO;
@@ -50,9 +50,9 @@ public class TournamentService {
 
     @Transactional
     public WebServiceResponse addTeamToTournament(Integer tournamentId, Integer gameId) {
-        TournamentEntity tournamentEntity = tournamentRepository.findById(tournamentId)
+        /* TournamentEntity tournamentEntity = */ tournamentRepository.findById(tournamentId)
                 .orElseThrow(() -> new RuntimeException("Tournament not found"));
-        TeamEntity teamEntity = teamRepository.findById(gameId)
+        /* TeamEntity teamEntity = */ teamRepository.findById(gameId)
                 .orElseThrow(() -> new RuntimeException("Team not found"));
         TournamentGameEntity tournamentGameEntity = new TournamentGameEntity();
         tournamentGameEntity.setTournamentId(tournamentId);
