@@ -229,6 +229,7 @@ public class GameService {
             game.setName(gameDTO.getName());
             game.setField(gameDTO.getField());
             game.setGameDate(gameDTO.getGameDate());
+            game.setGameTime(gameDTO.getGameTime());
             gameRepository.save(game);
 
             GameGenderEntity gameGender = gameGenderRepository.findByGameIdAndDeletedIsNull(gameId)
