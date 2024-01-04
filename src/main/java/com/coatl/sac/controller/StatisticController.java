@@ -29,14 +29,6 @@ public class StatisticController {
         return statisticService.createStatistic(statisticDto);
     }
 
-    @PostMapping("/{statisticId}/game/{gameId}")
-    public WebServiceResponse assignStatisticGame(
-        @PathVariable Integer statisticId,
-        @PathVariable Integer gameId
-    ) {
-        return statisticService.assignStatisticGame(statisticId, gameId);
-    }
-
     @GetMapping("/{gameId}")
     public WebServiceResponse getStatisticByGame(
         @PathVariable Integer gameId
