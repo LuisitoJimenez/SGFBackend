@@ -2,13 +2,11 @@ package com.coatl.sac.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-/* import java.util.ArrayList;
-import java.util.HashMap; */
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
@@ -17,15 +15,12 @@ import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.entity.ClubTeamEntity;
 import com.coatl.sac.entity.GenderEntity;
 import com.coatl.sac.entity.SubEntity;
-//import com.coatl.sac.entity.PlayerEntity;
 import com.coatl.sac.entity.TeamEntity;
 import com.coatl.sac.entity.TeamGenderEntity;
 import com.coatl.sac.entity.TeamPlayerEntity;
 import com.coatl.sac.entity.TeamSubEntity;
-//import com.coatl.sac.json.UserName;
 import com.coatl.sac.model.TeamAssignmentDTO;
 import com.coatl.sac.model.TeamDTO;
-//import com.coatl.sac.repository.ClubRepository;
 import com.coatl.sac.repository.ClubTeamRepository;
 import com.coatl.sac.repository.GenderRepository;
 import com.coatl.sac.repository.PlayerRepository;
@@ -34,9 +29,7 @@ import com.coatl.sac.repository.TeamGenderRepository;
 import com.coatl.sac.repository.TeamPlayerRepository;
 import com.coatl.sac.repository.TeamRepository;
 import com.coatl.sac.repository.TeamSubRepository;
-/* import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper; */
+
 
 import lombok.RequiredArgsConstructor;
 
@@ -44,10 +37,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TeamService {
 
-    // @Autowired
     private final TeamRepository teamRepository;
-
-    // private final ClubRepository clubRepository;
 
     private final ClubTeamRepository clubTeamRespository;
 
@@ -64,24 +54,7 @@ public class TeamService {
     private final SubRepository subsRepository;
 
     public List<Map<String, Object>> getTeamList() {
-/*         ObjectMapper mapper = new ObjectMapper();
-        List<Map<String, Object>> teamList = teamRepository.getTeamList();
-        List<Map<String, Object>> result = new ArrayList<>();
-        for (Map<String, Object> team : teamList) {
-            Map<String, Object> newTeam = new HashMap<>(team);
-            String coachString = (String) newTeam.get("coach");
-            try {
-                Map<String, Object> coach = mapper.readValue(coachString, new TypeReference<Map<String, Object>>() {
-                });
-                newTeam.put("coach", coach);
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-            result.add(newTeam);
-        }
-        return result; */
         return teamRepository.getTeamList();
-
     }
 
     @Transactional
@@ -91,9 +64,7 @@ public class TeamService {
             TeamEntity team = new TeamEntity();
             team.setName(teamDTO.getTeamName());
             team.setCoach(teamDTO.getCoachName());
-            /* team.setCoach(new UserName(teamDTO.getCoach().getFirst(), teamDTO.getCoach().getLast(),
-                    teamDTO.getCoach().getSecondLast())); */
-            team.setUserCreated(1);
+            team.setCreatedBy(1);
             teamRepository.save(team);
 
             Optional<ClubTeamEntity> clubTeam = clubTeamRespository.findByClubIdAndTeamId(clubId, team.getId());
@@ -125,7 +96,7 @@ public class TeamService {
         ClubTeamEntity clubTeamEntity = new ClubTeamEntity();
         clubTeamEntity.setClubId(clubId);
         clubTeamEntity.setTeamId(teamId);
-        clubTeamEntity.setUserCreated(1);
+        clubTeamEntity.setCreatedBy(1);
         clubTeamRespository.save(clubTeamEntity);
     }
 
@@ -133,7 +104,7 @@ public class TeamService {
         TeamSubEntity teamSubEntity = new TeamSubEntity();
         teamSubEntity.setTeamId(teamId);
         teamSubEntity.setSubId(subId);
-        teamSubEntity.setUserCreated(1);
+        teamSubEntity.setCreatedBy(1);
         teamSubRepository.save(teamSubEntity);
     }
 
@@ -141,7 +112,7 @@ public class TeamService {
         TeamGenderEntity teamGender = new TeamGenderEntity();
         teamGender.setTeamId(teamId);
         teamGender.setGenderId(genderId);
-        teamGender.setUserCreated(1);
+        teamGender.setCreatedBy(1);
         teamGenderRepository.save(teamGender);
     }
 
@@ -167,9 +138,8 @@ public class TeamService {
                 TeamPlayerEntity teamPlayer = new TeamPlayerEntity();
                 teamPlayer.setTeamId(teamAssignmentDTO.getTeamId());
                 teamPlayer.setPlayerId(playerId);
-                // teamPlayer.setPositionId(1);
                 teamPlayer.setTypePlayerId(1);
-                teamPlayer.setUserCreated(1);
+                teamPlayer.setCreatedBy(1);
                 teamPlayerRepository.save(teamPlayer);
             }
 
@@ -202,8 +172,7 @@ public class TeamService {
                 TeamPlayerEntity teamPlayer = new TeamPlayerEntity();
                 teamPlayer.setTeamId(teamAssignmentDTO.getTeamId());
                 teamPlayer.setPlayerId(playerId);
-                // teamPlayer.setPositionId(1);
-                teamPlayer.setUserCreated(1);
+                teamPlayer.setCreatedBy(1);
                 teamPlayer.setTypePlayerId(2);
                 teamPlayerRepository.save(teamPlayer);
             }
@@ -232,26 +201,25 @@ public class TeamService {
         try {
             TeamEntity team = teamRepository.findByIdAndDeletedIsNull(teamId)
                     .orElseThrow(() -> new RuntimeException("Team not found"));
-            team.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            team.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             teamRepository.save(team);
 
             ClubTeamEntity clubTeam = clubTeamRespository.findByTeamIdAndDeletedIsNull(teamId)
                     .orElseThrow(() -> new RuntimeException("Team not associated with a club"));
-            clubTeam.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            clubTeam.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             clubTeamRespository.save(clubTeam);
 
             TeamGenderEntity teamGender = teamGenderRepository.findByTeamIdAndDeletedIsNull(teamId)
                     .orElseThrow(() -> new RuntimeException("Team not associated with a Gender"));
-            teamGender.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            teamGender.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             teamGenderRepository.save(teamGender);
 
             TeamSubEntity teamSub = teamSubRepository.findByTeamIdAndDeletedIsNull(teamId)
                     .orElseThrow(() -> new RuntimeException("Team not associated with a Sub"));
-            teamSub.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            teamSub.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             teamSubRepository.save(teamSub);
             return new WebServiceResponse(true, "Team deleted successfully");
         } catch (Exception e) {
-            // TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return new WebServiceResponse(false, e.getMessage());
         }
 
@@ -265,7 +233,7 @@ public class TeamService {
 
             team.setName(teamDTO.getTeamName());
             team.setCoach(teamDTO.getCoachName());
-            team.setUserCreated(1);            
+            team.setCreatedBy(1);            
             teamRepository.save(team);
 
             Optional<GenderEntity> gender = genderRepository.findById(teamDTO.getGenderId());            
@@ -277,17 +245,13 @@ public class TeamService {
 
             TeamGenderEntity teamGender = teamGenderRepository.findByTeamIdAndDeletedIsNull(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
             teamGender.setGenderId(teamDTO.getGenderId());
-            teamGender.setUserCreated(1);
+            teamGender.setCreatedBy(1);
             teamGenderRepository.save(teamGender);
 
             TeamSubEntity teamSub = teamSubRepository.findByTeamIdAndDeletedIsNull(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
             teamSub.setSubId(teamDTO.getSubId());
-            teamSub.setUserCreated(1);
+            teamSub.setCreatedBy(1);
             teamSubRepository.save(teamSub);
-
-            //saveTeamSub(team.getId(), teamDTO.getSubId());
-
-            //saveTeamGender(team.getId(), teamDTO.getGenderId());
 
             return new WebServiceResponse(true, "Team updated successfully");
         } catch (Exception e) {
