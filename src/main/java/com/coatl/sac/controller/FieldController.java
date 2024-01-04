@@ -28,7 +28,7 @@ public class FieldController {
     public WebServiceResponse createField(
         @RequestBody FieldDTO fieldDTO
     ) {
-        return new WebServiceResponse(fieldService.createField(fieldDTO));
+        return fieldService.createField(fieldDTO);
     }
     
 }
