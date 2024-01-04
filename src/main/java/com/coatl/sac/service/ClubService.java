@@ -56,7 +56,7 @@ public class ClubService {
         clubEntity.setEmail(clubDto.getEmail());
         clubEntity.setSocialNetworks(new SocialNetwork(clubDto.getFacebook(), clubDto.getTwitter(), clubDto.getTiktok(),
                 clubDto.getInstagram(), clubDto.getYoutube(), clubDto.getOther(), clubDto.getWebsite()));
-        clubEntity.setUserCreated(1);
+        clubEntity.setCreatedBy(1);
         clubRepository.save(clubEntity);
 
         return Map.of("id", clubEntity.getId());
@@ -76,7 +76,7 @@ public class ClubService {
             clubEntity.setSocialNetworks(
                     new SocialNetwork(clubDto.getFacebook(), clubDto.getTwitter(), clubDto.getTiktok(),
                             clubDto.getInstagram(), clubDto.getYoutube(), clubDto.getOther(), clubDto.getWebsite()));
-            clubEntity.setUserCreated(1);
+            clubEntity.setCreatedBy(1);
             clubRepository.save(clubEntity);
 
             return new WebServiceResponse(true, "Club updated successfully");
@@ -95,7 +95,7 @@ public class ClubService {
     @Transactional
     public WebServiceResponse deleteClub(Integer clubId) {
         ClubEntity clubEntity = clubRepository.findById(clubId).orElseThrow(() -> new RuntimeException("Club not found"));
-        clubEntity.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+        clubEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
         clubRepository.save(clubEntity);
         
         return new WebServiceResponse(true, "Club deleted successfully");
