@@ -78,7 +78,7 @@ public class GameService {
             //game.setField(gameDTO.getField());
             game.setGameTime(gameDTO.getGameTime());
             game.setGameDate(gameDTO.getGameDate());
-            game.setUserCreated(1);
+            game.setCreatedBy(1);
             gameRepository.save(game);
 
             Optional<GenderEntity> gender = genderRepository.findById(gameDTO.getGenderId());
@@ -122,7 +122,7 @@ public class GameService {
         GameTeamEntity gameTeamEntity = new GameTeamEntity();
         gameTeamEntity.setGameId(gameId);
         gameTeamEntity.setTeamId(teamId);
-        gameTeamEntity.setUserCreated(1);
+        gameTeamEntity.setCreatedBy(1);
         gameTeamRepository.save(gameTeamEntity);
         return new WebServiceResponse(true, "Game team assigned");
     }
@@ -168,7 +168,7 @@ public class GameService {
         GameGenderEntity gameGenderEntity = new GameGenderEntity();
         gameGenderEntity.setGameId(gameId);
         gameGenderEntity.setGenderId(genderId);
-        gameGenderEntity.setUserCreated(1);
+        gameGenderEntity.setCreatedBy(1);
         gameGenderRepository.save(gameGenderEntity);
         return gameGenderEntity;
     }
@@ -177,7 +177,7 @@ public class GameService {
         GameSubEntity gameSubEntity = new GameSubEntity();
         gameSubEntity.setGameId(gameId);
         gameSubEntity.setSubId(subId);
-        gameSubEntity.setUserCreated(1);
+        gameSubEntity.setCreatedBy(1);
         gameSubRepository.save(gameSubEntity);
         return gameSubEntity;
     }
@@ -186,7 +186,7 @@ public class GameService {
         GameRefereeEntity gameRefereeEntity = new GameRefereeEntity();
         gameRefereeEntity.setGameId(gameId);
         gameRefereeEntity.setRefereeId(refereeId);
-        gameRefereeEntity.setUserCreated(1);
+        gameRefereeEntity.setCreatedBy(1);
         gameRefereeRepository.save(gameRefereeEntity);
         return gameRefereeEntity;
     }
@@ -196,23 +196,23 @@ public class GameService {
         try {
 
             GameEntity game = gameRepository.findById(gameId).orElseThrow(() -> new RuntimeException("Game not found"));
-            game.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            game.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             ;
             gameRepository.save(game);
 
             GameSubEntity gameSub = gameSubRepository.findByGameId(gameId)
                     .orElseThrow(() -> new RuntimeException("GameSub not found"));
-            gameSub.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            gameSub.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             gameSubRepository.save(gameSub);
 
             GameGenderEntity gameGender = gameGenderRepository.findByGameId(gameId)
                     .orElseThrow(() -> new RuntimeException("GameGender not found"));
-            gameGender.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            gameGender.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             gameGenderRepository.save(gameGender);
 
             GameRefereeEntity gameReferee = gameRefereeRepository.findByGameId(gameId)
                     .orElseThrow(() -> new RuntimeException("GameReferee not found"));
-            gameReferee.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            gameReferee.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             gameRefereeRepository.save(gameReferee);
 
             return new WebServiceResponse(false, "Game deleted");
@@ -235,19 +235,19 @@ public class GameService {
             GameGenderEntity gameGender = gameGenderRepository.findByGameIdAndDeletedIsNull(gameId)
                     .orElseThrow(() -> new RuntimeException("Game not found"));
             gameGender.setGenderId(gameDTO.getGenderId());
-            gameGender.setUserCreated(1);
+            gameGender.setCreatedBy(1);
             gameGenderRepository.save(gameGender);
 
             GameSubEntity gameSub = gameSubRepository.findByGameIdAndDeletedIsNull(gameId)
                     .orElseThrow(() -> new RuntimeException("Game not found"));
             gameSub.setSubId(gameDTO.getSubId());
-            gameSub.setUserCreated(1);
+            gameSub.setCreatedBy(1);
             gameSubRepository.save(gameSub);
 
             GameRefereeEntity gameReferee = gameRefereeRepository.findByGameIdAndDeletedIsNull(gameId)
                     .orElseThrow(() -> new RuntimeException("Game not found"));
             gameReferee.setRefereeId(gameDTO.getRefereeId());
-            gameReferee.setUserCreated(1);
+            gameReferee.setCreatedBy(1);
             gameRefereeRepository.save(gameReferee);
 
             return new WebServiceResponse(true, "Game updated");
@@ -261,7 +261,7 @@ public class GameService {
         try {
             GameTeamEntity gameTeam = gameTeamRepository.findByGameIdAndTeamIdAndDeletedIsNull(gameId, teamId)
                     .orElseThrow(() -> new RuntimeException("GameTeam not found"));
-            gameTeam.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+            gameTeam.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             gameTeamRepository.save(gameTeam);
             return new WebServiceResponse(true, "GameTeam deleted");
         } catch (Exception e) {
