@@ -21,11 +21,11 @@ public abstract class BaseEntity {
     @Column(name = "id", nullable = false, unique = true)
     private Integer id;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at")
     private Timestamp createdAt;
 
     @Basic
-    @Column(name = "created_by", nullable = false)
+    @Column(name = "created_by")
     private Integer createdBy;
 
     @Column(name = "modified_at")
