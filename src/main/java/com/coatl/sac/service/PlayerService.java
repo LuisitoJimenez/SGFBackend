@@ -112,7 +112,7 @@ public class PlayerService {
         playerEntity.setIdentification(playerDto.getIdentification());
         Date birthday = Date.valueOf(playerDto.getBirthday());
         playerEntity.setBirthday(birthday);
-        playerEntity.setUserCreated(1);
+        playerEntity.setCreatedBy(1);
         playerEntity.setBirthplace(new Birthplace(playerDto.getState(), playerDto.getTown()));
 
         playerRepository.save(playerEntity);
@@ -128,7 +128,7 @@ public class PlayerService {
         PlayerGenderEntity playerGenderEntity = new PlayerGenderEntity();
         playerGenderEntity.setPlayerId(userId);
         playerGenderEntity.setGenderId(genderId);
-        playerGenderEntity.setUserCreated(1);
+        playerGenderEntity.setCreatedBy(1);
         playerGenderRepository.save(playerGenderEntity);
 
         return playerGenderEntity;
@@ -138,7 +138,7 @@ public class PlayerService {
         UserPlayerEntity userPlayerEntity = new UserPlayerEntity();
         userPlayerEntity.setUserId(userId);
         userPlayerEntity.setPlayerId(playerId);
-        userPlayerEntity.setUserCreated(1);
+        userPlayerEntity.setCreatedBy(1);
         userPlayerRepository.save(userPlayerEntity);
 
         return userPlayerEntity;
@@ -148,20 +148,20 @@ public class PlayerService {
     public WebServiceResponse deletePlayer(Integer playerId) {
         PlayerEntity playerEntity = playerRepository.findById(playerId)
                 .orElseThrow(() -> new RuntimeException("Player not found"));
-        playerEntity.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+        playerEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
         playerRepository.save(playerEntity);
 
         /*
          * PlayerGenderEntity playerGenderEntity =
          * playerGenderRepository.findByPlayerId(playerId)
          * .orElseThrow(() -> new RuntimeException("Player not found"));
-         * playerGenderEntity.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+         * playerGenderEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
          * playerGenderRepository.save(playerGenderEntity);
          */
 
         UserPlayerEntity userPlayerEntity = userPlayerRepository.findByPlayerId(playerId)
                 .orElseThrow(() -> new RuntimeException("Player not found"));
-        userPlayerEntity.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+        userPlayerEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
         userPlayerRepository.save(userPlayerEntity);
         return new WebServiceResponse(true, "Player deleted successfully");
     }
@@ -177,13 +177,13 @@ public class PlayerService {
             Date birthday = Date.valueOf(playerDto.getBirthday());
             playerEntity.setBirthday(birthday);
             playerEntity.setBirthplace(new Birthplace(playerDto.getState(), playerDto.getTown()));
-            playerEntity.setUserCreated(1);
+            playerEntity.setCreatedBy(1);
             playerRepository.save(playerEntity);
 
             PlayerGenderEntity playerGenderEntity = playerGenderRepository.findByPlayerId(playerId)
                     .orElseThrow(() -> new RuntimeException("Player not found"));
             playerGenderEntity.setGenderId(playerDto.getGender());
-            playerGenderEntity.setUserCreated(1);
+            playerGenderEntity.setCreatedBy(1);
             playerGenderRepository.save(playerGenderEntity);
 
             return new WebServiceResponse(true, "Player updated successfully");
