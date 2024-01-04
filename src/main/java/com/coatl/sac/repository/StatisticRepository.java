@@ -13,7 +13,7 @@ import com.coatl.sac.entity.StatisticEntity;
 @Repository
 public interface StatisticRepository extends JpaRepository<StatisticEntity, Integer> {
 
-    boolean existsByNameGame(String nameGame);
+    //boolean existsByNameGame(String nameGame);
 
     @Query(value = """
             SELECT statistic.name_game,
