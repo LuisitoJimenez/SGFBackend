@@ -38,5 +38,5 @@ public class FieldEntity extends BaseEntity{
 
     @Column(name = "capacity", nullable = false)
     private Integer capacity;
-    
+
 }
