@@ -34,11 +34,11 @@ public class TournamentService {
     public WebServiceResponse createTournament(TournamentDTO tournamentDto) {
         TournamentEntity tournamentEntity = new TournamentEntity();
         tournamentEntity.setName(tournamentDto.getName());
-        tournamentEntity.setStartDate(Timestamp.valueOf(tournamentDto.getStartDateTime()));
-        tournamentEntity.setEndDate(Timestamp.valueOf(tournamentDto.getEndDateTime()));
+        //tournamentEntity.setStartDate(Timestamp.valueOf(tournamentDto.getStartDateTime()));
+        //tournamentEntity.setEndDate(Timestamp.valueOf(tournamentDto.getEndDateTime()));
         //tournamentEntity.setAgeCategory(tournamentDto.getAgeCategory());
         //tournamentEntity.setGenderCategory(tournamentDto.getGenderCategory());
-        tournamentEntity.setUserCreated(tournamentDto.getUserCreated());
+        tournamentEntity.setCreatedBy(tournamentDto.getUserCreated());
         tournamentRepository.save(tournamentEntity);
         return new WebServiceResponse(true, "Tournament created successfully");
     }
@@ -57,7 +57,7 @@ public class TournamentService {
         TournamentGameEntity tournamentGameEntity = new TournamentGameEntity();
         tournamentGameEntity.setTournamentId(tournamentId);
         tournamentGameEntity.setGameId(gameId);
-        tournamentGameEntity.setUserCreated(1);
+        tournamentGameEntity.setCreatedBy(1);
         tournamentGameRepository.save(tournamentGameEntity);
         return new WebServiceResponse(true, "Team added to tournament successfully");
     }
