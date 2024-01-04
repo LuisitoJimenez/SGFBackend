@@ -60,11 +60,6 @@ public class RefereeService {
    private ObjectMapper objectMapper = new ObjectMapper();
 
    public List<Map<String, Object>> getRefereesList() {
-      /*
-       * List<Map<String, Object>> allReferees = refereeRepository.getRefereesList();
-       * return allReferees;
-       */
-
       List<Map<String, Object>> allReferees = refereeRepository.getRefereesList();
       List<Map<String, Object>> modifiedReferess = new ArrayList<>();
       for (Map<String, Object> player : allReferees) {
@@ -100,7 +95,7 @@ public class RefereeService {
       refereeEntity.setIdentification(refereeDto.getIdentification());
       Date birthday = Date.valueOf(refereeDto.getBirthday());
       refereeEntity.setBirthday(birthday);
-      refereeEntity.setUserCreated(1);
+      refereeEntity.setCreatedBy(1);
       refereeEntity.setBirthplace(new Birthplace(refereeDto.getState(), refereeDto.getTown()));
       refereeRepository.save(refereeEntity);
 
@@ -114,7 +109,7 @@ public class RefereeService {
       RefereeGenderEntity refereeGenderEntity = new RefereeGenderEntity();
       refereeGenderEntity.setRefereeId(userId);
       refereeGenderEntity.setGenderId(genderId);
-      refereeGenderEntity.setUserCreated(1);
+      refereeGenderEntity.setCreatedBy(1);
       refereeGenderRepository.save(refereeGenderEntity);
 
       return refereeGenderEntity;
@@ -124,7 +119,7 @@ public class RefereeService {
       UserRefereeEntity userRefereeEntity = new UserRefereeEntity();
       userRefereeEntity.setUserId(userId);
       userRefereeEntity.setRefereeId(refereeId);
-      userRefereeEntity.setUserCreated(1);
+      userRefereeEntity.setCreatedBy(1);
       userRefereeRepository.save(userRefereeEntity);
 
       return userRefereeEntity;
@@ -146,12 +141,12 @@ public class RefereeService {
    public WebServiceResponse deleteReferee(Integer refereeId) {
       RefereeEntity refereeEntity = refereeRepository.findById(refereeId)
             .orElseThrow(() -> new RuntimeException("Referee not found"));
-      refereeEntity.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+      refereeEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
       refereeRepository.save(refereeEntity);
 
       UserRefereeEntity userRefereeEntity = userRefereeRepository.findByRefereeId(refereeId)
             .orElseThrow(() -> new RuntimeException("Referee not found"));
-      userRefereeEntity.setDeleted(Timestamp.valueOf(LocalDateTime.now()));
+      userRefereeEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
       userRefereeRepository.save(userRefereeEntity);
       return new WebServiceResponse(true, "Referee deleted successfully");
    }
@@ -166,13 +161,13 @@ public class RefereeService {
          Date birthday = Date.valueOf(playerDto.getBirthday());
          refereeEntity.setBirthday(birthday);
          refereeEntity.setBirthplace(new Birthplace(playerDto.getState(), playerDto.getTown()));
-         refereeEntity.setUserCreated(1);
+         refereeEntity.setCreatedBy(1);
          refereeRepository.save(refereeEntity);
 
          RefereeGenderEntity refereeGenderEntity = refereeGenderRepository.findByRefereeId(refereeId)
                .orElseThrow(() -> new RuntimeException("Referee not found"));
          refereeGenderEntity.setGenderId(playerDto.getGender());
-         refereeGenderEntity.setUserCreated(1);
+         refereeGenderEntity.setCreatedBy(1);
          refereeGenderRepository.save(refereeGenderEntity);
 
          return new WebServiceResponse(true, "Referee updated successfully");
