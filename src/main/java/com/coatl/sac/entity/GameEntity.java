@@ -44,9 +44,9 @@ public class GameEntity {
     @Column(name = "game_date", nullable = false)
     private Date gameDate;
 
-    @Basic
+/*     @Basic
     @Column(name = "field", nullable = false)
-    private String field;
+    private String field; */
 /*     @JsonIgnore
     @Type(JsonType.class)
     @Column(name = "referee", columnDefinition = "longtext")
