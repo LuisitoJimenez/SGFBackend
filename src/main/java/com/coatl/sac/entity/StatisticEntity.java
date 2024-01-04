@@ -1,5 +1,7 @@
 package com.coatl.sac.entity;
 
+import com.coatl.sac.entity.base.BaseEntity;
+
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,32 +15,16 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "statistics")
-public class StatisticEntity {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, unique = true)
-    private Integer id;
+@Table(name = "statistic")
+public class StatisticEntity extends BaseEntity {
 
-    @Basic
-    @Column(name = "name_game")
-    private String nameGame;
-
-    @Basic
     @Column(name = "goals")
     private Integer goals;
 
-    @Basic
     @Column(name = "yellow_cards")
     private Integer yellowCards;
 
-    @Basic
     @Column(name = "red_cards")
     private Integer redCards;
-
-    @Basic
-    @Column(name = "penalties")
-    private Integer penalties;
 
 }

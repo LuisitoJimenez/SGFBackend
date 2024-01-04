@@ -31,18 +31,18 @@ public class StatisticService {
 
     @Transactional
     public WebServiceResponse createStatistic(StatisticDTO statisticDto) {
-        if (statisticRepository.existsByNameGame(statisticDto.getNameGame())) {
+/*         if (statisticRepository.existsByNameGame(statisticDto.getNameGame())) {
             return new WebServiceResponse(false, "There is a statistic with that name");
-        } else {
+        } else { */
             StatisticEntity statisticEntity = new StatisticEntity();
-            statisticEntity.setNameGame(statisticDto.getNameGame());
+            //statisticEntity.setNameGame(statisticDto.getNameGame());
             statisticEntity.setRedCards(statisticDto.getRedCards());
             statisticEntity.setYellowCards(statisticDto.getYellowCards());
             statisticEntity.setGoals(statisticDto.getGoals());
-            statisticEntity.setPenalties(statisticDto.getPenalties());
+            //statisticEntity.setPenalties(statisticDto.getPenalties());
             statisticRepository.save(statisticEntity);
             return new WebServiceResponse(true, "Statistic created successfully");
-        }
+        //}
     }
 
     @Transactional

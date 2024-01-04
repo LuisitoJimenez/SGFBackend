@@ -75,7 +75,7 @@ public class GameService {
             }
             GameEntity game = new GameEntity();
             game.setName(gameDTO.getName());
-            game.setField(gameDTO.getField());
+            //game.setField(gameDTO.getField());
             game.setGameTime(gameDTO.getGameTime());
             game.setGameDate(gameDTO.getGameDate());
             game.setUserCreated(1);
@@ -227,8 +227,9 @@ public class GameService {
 
             GameEntity game = gameRepository.findById(gameId).orElseThrow(() -> new RuntimeException("Game not found"));
             game.setName(gameDTO.getName());
-            game.setField(gameDTO.getField());
+            //game.setField(gameDTO.getField());
             game.setGameDate(gameDTO.getGameDate());
+            game.setGameTime(gameDTO.getGameTime());
             gameRepository.save(game);
 
             GameGenderEntity gameGender = gameGenderRepository.findByGameIdAndDeletedIsNull(gameId)

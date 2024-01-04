@@ -11,17 +11,13 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tournament")
-public class TournamentEntity extends BaseEntity{
-
-    @Column(name = "logo")
-    private String logo;
-
+@Table(name = "matchday")
+public class MatchdayEntity extends BaseEntity {
+    
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "description")
     private String description;
     
-
 }

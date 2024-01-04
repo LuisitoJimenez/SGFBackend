@@ -20,7 +20,7 @@ import lombok.Setter;
 @Table(name = "games_subs")
 public class GameSubEntity {
 
-     @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;

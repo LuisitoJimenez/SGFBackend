@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/categories")
 @Tag(name = "Categories", description = "Categories management")
-public class CategoriesController {
+public class CategoryController {
 
     @Autowired
     private CategoriesService categoriesService;

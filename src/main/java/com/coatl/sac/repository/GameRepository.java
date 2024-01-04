@@ -29,7 +29,6 @@ public interface GameRepository extends JpaRepository<GameEntity, Integer> {
                 game.name,
                 game.game_date,
                 game.game_time,
-                game.field,
                 sub.name AS sub,
                 gender.name AS gender,
                 user.name AS referee
@@ -52,7 +51,6 @@ public interface GameRepository extends JpaRepository<GameEntity, Integer> {
                 game.name,
                 game.game_date AS gameDate,
                 game.game_time AS gameTime,
-                game.field,
                 sub.id AS subId,
                 gender.id AS genderId,
                 referee.id AS refereeId
