@@ -10,9 +10,9 @@ import com.coatl.sac.entity.GameTeamEntity;
 @Repository
 public interface GameTeamRepository extends JpaRepository<GameTeamEntity, Integer>{
     
-    long countByGameIdAndDeletedIsNull(Integer gameId);
+    long countByGameIdAndDeletedAtIsNull(Integer gameId);
 
-    boolean existsByGameIdAndTeamIdAndDeletedIsNull(Integer gameId, Integer teamId);
+    boolean existsByGameIdAndTeamIdAndDeletedAtIsNull(Integer gameId, Integer teamId);
 
-    Optional<GameTeamEntity> findByGameIdAndTeamIdAndDeletedIsNull(Integer gameId, Integer teamId);
+    Optional<GameTeamEntity> findByGameIdAndTeamIdAndDeletedAtIsNull(Integer gameId, Integer teamId);
 }
