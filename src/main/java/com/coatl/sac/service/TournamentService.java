@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coatl.sac.dto.WebServiceResponse;
-//import com.coatl.sac.entity.TeamEntity;
 import com.coatl.sac.entity.TournamentEntity;
 import com.coatl.sac.entity.TournamentGameEntity;
 import com.coatl.sac.model.TournamentDTO;
@@ -34,10 +33,6 @@ public class TournamentService {
     public WebServiceResponse createTournament(TournamentDTO tournamentDto) {
         TournamentEntity tournamentEntity = new TournamentEntity();
         tournamentEntity.setName(tournamentDto.getName());
-        //tournamentEntity.setStartDate(Timestamp.valueOf(tournamentDto.getStartDateTime()));
-        //tournamentEntity.setEndDate(Timestamp.valueOf(tournamentDto.getEndDateTime()));
-        //tournamentEntity.setAgeCategory(tournamentDto.getAgeCategory());
-        //tournamentEntity.setGenderCategory(tournamentDto.getGenderCategory());
         tournamentEntity.setCreatedBy(tournamentDto.getUserCreated());
         tournamentRepository.save(tournamentEntity);
         return new WebServiceResponse(true, "Tournament created successfully");
@@ -50,9 +45,9 @@ public class TournamentService {
 
     @Transactional
     public WebServiceResponse addTeamToTournament(Integer tournamentId, Integer gameId) {
-        /* TournamentEntity tournamentEntity = */ tournamentRepository.findById(tournamentId)
+        tournamentRepository.findById(tournamentId)
                 .orElseThrow(() -> new RuntimeException("Tournament not found"));
-        /* TeamEntity teamEntity = */ teamRepository.findById(gameId)
+        teamRepository.findById(gameId)
                 .orElseThrow(() -> new RuntimeException("Team not found"));
         TournamentGameEntity tournamentGameEntity = new TournamentGameEntity();
         tournamentGameEntity.setTournamentId(tournamentId);
@@ -62,9 +57,9 @@ public class TournamentService {
         return new WebServiceResponse(true, "Team added to tournament successfully");
     }
 
-    public List<Map<String,Object>> getTournamentGames(Integer tournamentId) {
+/*     public List<Map<String,Object>> getTournamentGames(Integer tournamentId) {
         List<Map<String, Object>> tournamentGames = tournamentRepository.getTournamentGames(tournamentId);
         return tournamentGames;
-    }
+    } */
 
 }
