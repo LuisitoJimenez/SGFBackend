@@ -68,9 +68,9 @@ public class GameService {
     @Transactional
     public WebServiceResponse createGame(GameDTO gameDTO) {
         try {
-            if (gameRepository.existsByGameTimeAndDeletedIsNull(gameDTO.getGameTime())) {
+            if (gameRepository.existsByGameTimeAndDeletedAtIsNull(gameDTO.getGameTime())) {
                 return new WebServiceResponse(false, "There is a game with that time");
-            } else if (gameRepository.existsByNameAndDeletedIsNull(gameDTO.getName())) {
+            } else if (gameRepository.existsByNameAndDeletedAtIsNull(gameDTO.getName())) {
                 return new WebServiceResponse(false, "There is a game with that name");
             }
             GameEntity game = new GameEntity();
@@ -110,11 +110,11 @@ public class GameService {
 
     @Transactional
     public WebServiceResponse assignGameTeam(Integer gameId, Integer teamId) {
-        long countGameId = gameTeamRepository.countByGameIdAndDeletedIsNull(gameId);
+        long countGameId = gameTeamRepository.countByGameIdAndDeletedAtIsNull(gameId);
         if (countGameId >= 2) {
             return new WebServiceResponse(false, "Two records already exist with the same gameId");
         }
-        boolean exists = gameTeamRepository.existsByGameIdAndTeamIdAndDeletedIsNull(gameId, teamId);
+        boolean exists = gameTeamRepository.existsByGameIdAndTeamIdAndDeletedAtIsNull(gameId, teamId);
         if (exists) {
             return new WebServiceResponse(false, "A record already exists with the same gameId and teamId");
         }
@@ -128,40 +128,12 @@ public class GameService {
     }
 
     public List<Map<String, Object>> getGameTeams(Integer userId) {
-        //List<Map<String, Object>> teams = gameRepository.getGameTeams(userId);
-        //return teams;
         return gameRepository.getGameTeams(userId);
     }
 
-    /*
-     * public List<GameEntity> getGameList() {
-     * List<GameEntity> games = gameRepository.findAll();
-     * return games;
-     * }
-     */
-
-    // @Transactional
     public List<Map<String, Object>> getGameList() {
 
         return gameRepository.getGameList();
-        /*
-         * List<Map<String, Object>> allGames = gameRepository.getGameList();
-         * List<Map<String, Object>> modifiedGames = new ArrayList<>();
-         * for (Map<String, Object> game : allGames) {
-         * Map<String, Object> modifiedGame = new HashMap<>(game);
-         * try {
-         * if (modifiedGame.get("referee") != null) {
-         * Map<String, Object> name =
-         * objectMapper.readValue(game.get("referee").toString(), Map.class);
-         * modifiedGame.put("referee", name);
-         * }
-         * modifiedGames.add(modifiedGame);
-         * } catch (JsonProcessingException e) {
-         * log.error(e);
-         * }
-         * }
-         * return modifiedGames;
-         */
     }
 
     private GameGenderEntity saveGameGender(Integer gameId, Integer genderId) {
@@ -232,19 +204,19 @@ public class GameService {
             game.setGameTime(gameDTO.getGameTime());
             gameRepository.save(game);
 
-            GameGenderEntity gameGender = gameGenderRepository.findByGameIdAndDeletedIsNull(gameId)
+            GameGenderEntity gameGender = gameGenderRepository.findByGameIdAndDeletedAtIsNull(gameId)
                     .orElseThrow(() -> new RuntimeException("Game not found"));
             gameGender.setGenderId(gameDTO.getGenderId());
             gameGender.setCreatedBy(1);
             gameGenderRepository.save(gameGender);
 
-            GameSubEntity gameSub = gameSubRepository.findByGameIdAndDeletedIsNull(gameId)
+            GameSubEntity gameSub = gameSubRepository.findByGameIdAndDeletedAtIsNull(gameId)
                     .orElseThrow(() -> new RuntimeException("Game not found"));
             gameSub.setSubId(gameDTO.getSubId());
             gameSub.setCreatedBy(1);
             gameSubRepository.save(gameSub);
 
-            GameRefereeEntity gameReferee = gameRefereeRepository.findByGameIdAndDeletedIsNull(gameId)
+            GameRefereeEntity gameReferee = gameRefereeRepository.findByGameIdAndDeletedAtIsNull(gameId)
                     .orElseThrow(() -> new RuntimeException("Game not found"));
             gameReferee.setRefereeId(gameDTO.getRefereeId());
             gameReferee.setCreatedBy(1);
@@ -259,7 +231,7 @@ public class GameService {
 
     public WebServiceResponse deleteGameTeam(Integer gameId, Integer teamId) {
         try {
-            GameTeamEntity gameTeam = gameTeamRepository.findByGameIdAndTeamIdAndDeletedIsNull(gameId, teamId)
+            GameTeamEntity gameTeam = gameTeamRepository.findByGameIdAndTeamIdAndDeletedAtIsNull(gameId, teamId)
                     .orElseThrow(() -> new RuntimeException("GameTeam not found"));
             gameTeam.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             gameTeamRepository.save(gameTeam);
