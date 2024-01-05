@@ -17,43 +17,42 @@ public interface TeamRepository extends JpaRepository<TeamEntity, Integer> {
     List<TeamEntity> findAll();
 
     @Query(value = """
-            SELECT
-                team.id AS id,
-                team.name AS name,
-                team.coach AS coach,
-                gender.name AS gender,
-                sub.name AS sub,
-                club.name AS club
-            FROM teams team
-                INNER JOIN teams_subs teamSub ON team.id = teamSub.team_id AND teamSub.deleted IS NULL
-                INNER JOIN subs sub ON teamSub.sub_id = sub.id AND sub.deleted IS NULL
-                INNER JOIN teams_genders teamGender ON team.id = teamGender.team_id AND teamGender.deleted IS NULL
-                INNER JOIN genders gender ON teamGender.gender_id = gender.id
-                INNER JOIN clubs_teams clubTeam ON team.id = clubTeam.team_id AND clubTeam.deleted IS NULL
-                INNER JOIN clubs club ON clubTeam.club_id = club.id
-            WHERE team.deleted IS NULL
-                                """, nativeQuery = true)
+            SELECT t.id    AS id,
+                   t.name  AS name,
+                   t.coach AS coach,
+                   g.name  AS gender,
+                   s.name  AS sub,
+                   c.name  AS club
+            FROM team t
+                    INNER JOIN team_sub ts ON t.id = ts.team_id AND ts.deleted_at IS NULL
+                    INNER JOIN sub s ON ts.sub_id = s.id AND s.deleted_at IS NULL
+                    INNER JOIN team_gender tg ON t.id = tg.team_id AND tg.deleted_at IS NULL
+                    INNER JOIN gender g ON tg.gender_id = g.id
+                    INNER JOIN club_team ct ON t.id = ct.team_id AND ct.deleted_at IS NULL
+                    INNER JOIN club c ON ct.club_id = c.id
+            WHERE t.deleted_at IS NULL
+                    """, nativeQuery = true)
     List<Map<String, Object>> getTeamList();
 
     @Query(value = """
-            SELECT
-                team.id AS id,
-                team.name,
-                team.coach,
-                gender.id AS gender,
-                sub.id AS sub,
-                club.name AS club
-            FROM teams team
-                INNER JOIN teams_subs teamSub ON team.id = teamSub.team_id AND teamSub.deleted IS NULL
-                INNER JOIN subs sub ON teamSub.sub_id = sub.id AND sub.deleted IS NULL
-                INNER JOIN teams_genders teamGender ON team.id = teamGender.team_id AND teamGender.deleted IS NULL
-                INNER JOIN genders gender ON teamGender.gender_id = gender.id
-                INNER JOIN clubs_teams clubTeam ON team.id = clubTeam.team_id AND clubTeam.deleted IS NULL
-                INNER JOIN clubs club ON clubTeam.club_id = club.id
-            WHERE team.deleted IS NULL AND team.id = :pTeamId
-                        """, nativeQuery = true)
+            SELECT t.id   AS id,
+                   t.name,
+                   t.coach,
+                   g.id AS gender,
+                   s.id    AS sub,
+                   c.name AS club
+            FROM team t
+                    INNER JOIN team_sub ts ON t.id = ts.team_id AND ts.deleted_at IS NULL
+                    INNER JOIN sub s ON ts.sub_id = s.id AND s.deleted_at IS NULL
+                    INNER JOIN team_gender tg ON t.id = tg.team_id AND tg.deleted_at IS NULL
+                    INNER JOIN gender g ON tg.gender_id = g.id
+                    INNER JOIN club_team ct ON t.id = ct.team_id AND ct.deleted_at IS NULL
+                    INNER JOIN club c ON ct.club_id = c.id
+            WHERE t.deleted_at IS NULL
+              AND t.id = :pTeamId
+                    """, nativeQuery = true)
     Map<String, Object> getTeamById(Integer pTeamId);
 
-    Optional<TeamEntity> findByIdAndDeletedIsNull(Integer teamId);
+    Optional<TeamEntity> findByIdAndDeletedAtIsNull(Integer teamId);
 
 }
