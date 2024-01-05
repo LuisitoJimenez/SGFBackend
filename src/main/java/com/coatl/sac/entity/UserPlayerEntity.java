@@ -15,7 +15,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "user_player")
-@Where(clause = "deleted IS NULL")
 public class UserPlayerEntity extends BaseEntity{
 
     @Basic
