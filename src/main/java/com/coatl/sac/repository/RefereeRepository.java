@@ -14,43 +14,43 @@ import com.coatl.sac.entity.RefereeEntity;
 public interface RefereeRepository extends JpaRepository<RefereeEntity, Integer> {
 
        @Query(value = """
-                     SELECT
-                         referee.id,
-                         user.name,
-                         user.id AS userId,
-                         gender.id AS genderId,
-                         JSON_UNQUOTE(JSON_EXTRACT(referee.photo, '$[0].name')) AS photo,
-                         referee.identification,
-                         referee.birthplace,
-                         referee.birthday,
-                         referee.weight,
-                         referee.height
-                     FROM users user
-                     INNER JOIN users_referees userReferee ON user.id = userReferee.user_id AND userReferee.deleted IS NULL
-                     INNER JOIN referees referee ON userReferee.referee_id = referee.id
-                     INNER JOIN referees_genders refereeGender ON referee.id = refereeGender.referee_id AND refereeGender.deleted IS NULL
-                     INNER JOIN genders gender ON refereeGender.gender_id = gender.id
-                     WHERE user.deleted IS NULL AND referee.deleted IS NULL;
-                                                    """, nativeQuery = true)
+                     SELECT r.id,
+                            u.name,
+                            u.id                                                AS userId,
+                            g.id                                              AS genderId,
+                            JSON_UNQUOTE(JSON_EXTRACT(r.photo, '$[0].name')) AS photo,
+                            r.identification,
+                            r.birthplace,
+                            r.birthday,
+                            r.weight,
+                            r.height
+                     FROM user u
+                            INNER JOIN user_referee ur ON u.id = ur.user_id AND ur.deleted_at IS NULL
+                            INNER JOIN referee r ON ur.referee_id = r.id
+                            INNER JOIN referee_gender rg ON r.id = rg.referee_id AND rg.deleted_at IS NULL
+                            INNER JOIN gender g ON rg.gender_id = g.id
+                     WHERE u.deleted_at IS NULL
+                       AND r.deleted_at IS NULL
+                     """, nativeQuery = true)
        List<Map<String, Object>> getRefereesList();
 
        @Query(value = """
-                     SELECT
-                            referee.id,
-                            user.name,
-                            gender.id AS genderId,
-                            referee.photo,
-                            referee.identification,
-                            referee.birthplace,
-                            referee.birthday,
-                            referee.weight,
-                            referee.height
-                     FROM users user
-                              INNER JOIN users_referees userReferee ON user.id = userReferee.user_id AND userReferee.deleted IS NULL
-                              INNER JOIN referees referee ON userReferee.referee_id = referee.id
-                              INNER JOIN referees_genders refereeGender ON referee.id = refereeGender.referee_id AND refereeGender.deleted IS NULL
-                              INNER JOIN genders gender ON refereeGender.gender_id = gender.id
-                     WHERE user.deleted IS NULL AND referee.id = :pRefereeId
+                     SELECT r.id,
+                            u.name,
+                            g.id AS genderId,
+                            r.photo,
+                            r.identification,
+                            r.birthplace,
+                            r.birthday,
+                            r.weight,
+                            r.height
+                     FROM user u
+                              INNER JOIN user_referee ur ON u.id = ur.user_id AND ur.deleted_at IS NULL
+                              INNER JOIN referee r ON ur.referee_id = r.id
+                              INNER JOIN referee_gender rg ON r.id = rg.referee_id AND rg.deleted_at IS NULL
+                              INNER JOIN gender g ON rg.gender_id = g.id
+                     WHERE u.deleted_at IS NULL
+                       AND r.id = :pRefereeId
                      """, nativeQuery = true)
        Map<String, Object> getRefereeById(@Param("pRefereeId") Integer playerId);
 }
