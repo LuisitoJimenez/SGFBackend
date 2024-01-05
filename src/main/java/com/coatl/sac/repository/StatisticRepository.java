@@ -15,7 +15,7 @@ public interface StatisticRepository extends JpaRepository<StatisticEntity, Inte
 
     //boolean existsByNameGame(String nameGame);
 
-    @Query(value = """
+/*     @Query(value = """
             SELECT statistic.name_game,
                 statistic.id,
                 statistic.goals,
@@ -27,6 +27,6 @@ public interface StatisticRepository extends JpaRepository<StatisticEntity, Inte
             LEFT JOIN games g ON sg.game_id = g.id
             WHERE g.id = :pGameId
                         """, nativeQuery = true)
-    List<Map<String, Object>> getStatisticByGame(@Param ("pGameId") Integer gameId);
+    List<Map<String, Object>> getStatisticByGame(@Param ("pGameId") Integer gameId); */
 
 }
