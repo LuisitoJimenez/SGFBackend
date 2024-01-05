@@ -15,7 +15,7 @@ public interface TournamentRepository extends JpaRepository<TournamentEntity, In
     
     List<TournamentEntity> findAll();
 
-    @Query(
+    /* @Query(
         value = """
             SELECT
             tournament.id,
@@ -34,4 +34,5 @@ public interface TournamentRepository extends JpaRepository<TournamentEntity, In
         WHERE tournament.id = :ptournamentId AND tournamentGame.deleted IS NULL
                 """, nativeQuery = true
     )List<Map<String, Object>> getTournamentGames(@Param("ptournamentId") Integer tournamentId);
+ */
 }
