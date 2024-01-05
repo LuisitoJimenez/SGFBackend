@@ -29,10 +29,11 @@ public class StatisticController {
         return statisticService.createStatistic(statisticDto);
     }
 
-    @GetMapping("/{gameId}")
+/*     @GetMapping("/{gameId}")
     public WebServiceResponse getStatisticByGame(
         @PathVariable Integer gameId
     ) {
         return new WebServiceResponse(statisticService.getStatisticByGame(gameId));
-    }
+    } */
+    
 }
