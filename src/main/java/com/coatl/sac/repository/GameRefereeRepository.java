@@ -12,5 +12,5 @@ public interface GameRefereeRepository extends JpaRepository<GameRefereeEntity, 
     
     Optional<GameRefereeEntity> findByGameId(Integer gameId);
 
-    Optional<GameRefereeEntity> findByGameIdAndDeletedIsNull(Integer gameId);
+    Optional<GameRefereeEntity> findByGameIdAndDeletedAtIsNull(Integer gameId);
 }
