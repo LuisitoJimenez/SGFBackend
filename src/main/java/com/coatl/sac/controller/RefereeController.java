@@ -75,7 +75,7 @@ public class RefereeController {
     public byte[] getImageReferee(
         @PathVariable Integer refereeId,
         @PathVariable String fileId
-    ){
+    ) {
         return refereeService.getImageReferee(refereeId, fileId);
     }
 
