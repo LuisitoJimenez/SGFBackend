@@ -12,10 +12,8 @@ import java.util.Map;
 import java.util.Objects;
 
 import com.google.gson.Gson;
-//import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-//import com.google.gson.ToNumberPolicy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -37,9 +35,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-/* import software.amazon.awssdk.services.cognitoidentityprovider.endpoints.internal.Value.Str;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray; */
 
 @Log4j2
 @Service
@@ -60,12 +55,6 @@ public class PlayerService {
     private final S3Service objectStorage;
 
     private final Environment environment;
-
-    /*
-     * private final Gson gson = new GsonBuilder()
-     * .setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE)
-     * .create();
-     */
 
     public List<Map<String, Object>> getPlayerList() {
         List<Map<String, Object>> allPlayers = playerRepository.getListPlayers();
@@ -120,7 +109,6 @@ public class PlayerService {
         saveUserPlayer(userId, playerEntity.getId());
         savePlayerGender(playerEntity.getId(), playerDto.getGender());
 
-        // return new WebServiceResponse(true, "Player created", playerEntity.getId());
         return Map.of("id", playerEntity.getId());
     }
 
@@ -151,14 +139,6 @@ public class PlayerService {
         playerEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
         playerRepository.save(playerEntity);
 
-        /*
-         * PlayerGenderEntity playerGenderEntity =
-         * playerGenderRepository.findByPlayerId(playerId)
-         * .orElseThrow(() -> new RuntimeException("Player not found"));
-         * playerGenderEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
-         * playerGenderRepository.save(playerGenderEntity);
-         */
-
         UserPlayerEntity userPlayerEntity = userPlayerRepository.findByPlayerId(playerId)
                 .orElseThrow(() -> new RuntimeException("Player not found"));
         userPlayerEntity.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
@@ -171,7 +151,6 @@ public class PlayerService {
         try {
             PlayerEntity playerEntity = playerRepository.findById(playerId)
                     .orElseThrow(() -> new RuntimeException("Player not found"));
-            // playerEntity.setIdentification(playerDto.getIdentification());
             playerEntity.setHeight(playerDto.getHeight());
             playerEntity.setWeight(playerDto.getWeight());
             Date birthday = Date.valueOf(playerDto.getBirthday());
@@ -200,16 +179,6 @@ public class PlayerService {
         String objectkey = String.join("/", "players", playerId.toString(), file.getOriginalFilename());
         try {
             objectStorage.uploadFile(bucketName, objectkey, file.getInputStream());
-            /*
-             * Map<String, Object> fileData = new HashMap<>();
-             * fileData.put("key", objectkey);
-             * fileData.put("sizeBytes", file.getBytes().length);
-             * fileData.put("type", Objects.requireNonNull(file.getOriginalFilename())
-             * .substring(file.getOriginalFilename().lastIndexOf(".") + 1));
-             * fileData.put("tsCreated", Instant.now().getEpochSecond());
-             * 
-             * String url = "https://" + bucketName + ".s3.amazonaws.com/" + objectkey;
-             */
 
             JsonObject fileData = new JsonObject();
             fileData.addProperty("key", objectkey);
@@ -222,15 +191,12 @@ public class PlayerService {
 
             JsonArray filesAppend = new JsonArray();
             filesAppend.add(fileData);
-            // Map<String, Object> filesMap = gson.fromJson(filesAppend, Map.class);
 
             PlayerEntity playerEntity = playerRepository.findById(playerId)
                     .orElseThrow(() -> new RuntimeException("Player not found"));
 
             playerEntity.setPhoto(filesAppend.toString());
 
-            // playerEntity.setPhoto(objectkey);
-            // playerEntity.setPhoto(url);
             playerRepository.save(playerEntity);
 
         } catch (IOException e) {
