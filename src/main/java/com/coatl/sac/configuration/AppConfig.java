@@ -17,10 +17,12 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProvider;
 import com.amazonaws.services.cognitoidp.AWSCognitoIdentityProviderClientBuilder;
 import software.amazon.awssdk.services.cognitoidentityprovider.CognitoIdentityProviderClient;
-
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
+import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
@@ -65,9 +67,18 @@ public class AppConfig implements WebMvcConfigurer {
                 .build();
     }
 
+    /*
+     * @Bean
+     * public static S3Client s3Client() {
+     * return S3Client.builder().build();
+     * }
+     */
+
     @Bean
-    public static S3Client s3Client() {
-        return S3Client.builder().build();
+    public S3Client s3Client() {
+        return S3Client.builder()
+                .region(Region.US_WEST_2)
+                .build();
     }
 
     @Bean
@@ -89,7 +100,7 @@ public class AppConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
     }
-    
+
     @Bean
     public LocaleResolver localeResolver() {
         AcceptHeaderLocaleResolver ahlr = new AcceptHeaderLocaleResolver();
