@@ -1,7 +1,5 @@
 package com.coatl.sac.entity;
 
-import org.hibernate.annotations.Where;
-
 import com.coatl.sac.entity.base.BaseEntity;
 
 import jakarta.persistence.Basic;
@@ -15,7 +13,6 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "user_referee")
-@Where(clause = "deleted IS NULL")
 public class UserRefereeEntity extends BaseEntity{
 
     @Basic
