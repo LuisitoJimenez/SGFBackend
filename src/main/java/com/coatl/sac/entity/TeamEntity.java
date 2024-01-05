@@ -21,13 +21,4 @@ public class TeamEntity extends BaseEntity{
     @Column(name = "coach", nullable = false)
     private String coach;
 
-/*     @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "users_teams",
-        joinColumns = @JoinColumn(name = "team_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<UserEntity> users; */
-
 }
