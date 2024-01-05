@@ -59,7 +59,7 @@ public interface GameRepository extends JpaRepository<GameEntity, Integer> {
                     INNER JOIN game_referee gr ON gm.id = gr.game_id AND gr.deleted_at IS NULL
                     INNER JOIN referee r ON gr.referee_id = r.id AND r.deleted_at IS NULL
             WHERE gm.deleted_at IS NULL
-              AND gm.id = :pGameId;
+              AND gm.id = :pGameId
                                """, nativeQuery = true)
     Map<String, Object> findGameById(@Param("pGameId") Integer gameId);
 
