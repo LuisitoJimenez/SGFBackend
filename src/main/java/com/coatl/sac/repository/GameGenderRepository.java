@@ -13,7 +13,7 @@ public interface GameGenderRepository extends JpaRepository<GameGenderEntity, In
 
     // Optional<GameGenderEntity> findByGameId(Integer gameId);
 
-    Optional<GameGenderEntity> findByGameIdAndDeletedIsNull(Integer gameId);
+    Optional<GameGenderEntity> findByGameIdAndDeletedAtIsNull(Integer gameId);
 
     Optional<GameGenderEntity> findByGameIdAndGenderId(Integer gameId, Integer genderId);
 
