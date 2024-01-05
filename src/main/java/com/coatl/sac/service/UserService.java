@@ -140,14 +140,4 @@ public class UserService {
         return new WebServiceResponse(true, "User deleted successfully");
     }
 
-    public List<Map<String, Object>> getTeams(Integer userId) {
-        List<Map<String, Object>> userTeams = userRepository.getTeams(userId);
-        return userTeams;
-    }
-
-    public List<Map<String, Object>> getRoles(Integer userId) {
-        List<Map<String, Object>> userRoles = userRepository.getRoles(userId);
-        return userRoles;
-    }
-
 }
