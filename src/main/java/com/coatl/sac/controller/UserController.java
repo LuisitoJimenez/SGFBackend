@@ -56,17 +56,4 @@ public class UserController {
         return userService.deleteUser(userId);
     }
 
-    @GetMapping(value = "/teams/{userId}")
-    public WebServiceResponse getTeams(
-            @PathVariable Integer userId) {
-        return new WebServiceResponse(userService.getTeams(userId));
-    }
-
-    @GetMapping(value = "/roles/{userId}")
-    public WebServiceResponse getRoles(
-        @PathVariable Integer userId
-    ) {
-        return new WebServiceResponse(userService.getRoles(userId));
-    }
-
 }
