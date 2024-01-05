@@ -10,7 +10,7 @@ import com.coatl.sac.entity.TeamSubEntity;
 @Repository
 public interface TeamSubRepository extends JpaRepository<TeamSubEntity, Integer>{
 
-    Optional<TeamSubEntity> findByTeamIdAndDeletedIsNull(Integer teamId);
+    Optional<TeamSubEntity> findByTeamIdAndDeletedAtIsNull(Integer teamId);
 
     //Optional<TeamSubEntity> findByTeamIdAndDeletedIsNull(Integer teamId);
 }
