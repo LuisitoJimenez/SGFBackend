@@ -42,11 +42,11 @@ public class TournamentController {
         return tournamentService.addTeamToTournament(tournamentId, gameId);
     }
 
-    @GetMapping("/{tournamentId}/games")
+/*     @GetMapping("/{tournamentId}/games")
     public WebServiceResponse getTournamentGames(
         @PathVariable Integer tournamentId
     ) {
         return new WebServiceResponse(tournamentService.getTournamentGames(tournamentId));
-    }
+    } */
 
 }
