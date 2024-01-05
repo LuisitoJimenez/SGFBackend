@@ -12,6 +12,6 @@ public interface GameSubRepository extends JpaRepository<GameSubEntity, Integer>
     
     Optional<GameSubEntity> findByGameId(Integer gameId);
 
-    Optional<GameSubEntity> findByGameIdAndDeletedIsNull(Integer gameId);
+    Optional<GameSubEntity> findByGameIdAndDeletedAtIsNull(Integer gameId);
     
 }
