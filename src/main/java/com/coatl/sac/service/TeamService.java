@@ -199,22 +199,22 @@ public class TeamService {
     public WebServiceResponse deleteTeamById(Integer teamId) {
 
         try {
-            TeamEntity team = teamRepository.findByIdAndDeletedIsNull(teamId)
+            TeamEntity team = teamRepository.findByIdAndDeletedAtIsNull(teamId)
                     .orElseThrow(() -> new RuntimeException("Team not found"));
             team.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             teamRepository.save(team);
 
-            ClubTeamEntity clubTeam = clubTeamRespository.findByTeamIdAndDeletedIsNull(teamId)
+            ClubTeamEntity clubTeam = clubTeamRespository.findByTeamIdAndDeletedAtIsNull(teamId)
                     .orElseThrow(() -> new RuntimeException("Team not associated with a club"));
             clubTeam.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             clubTeamRespository.save(clubTeam);
 
-            TeamGenderEntity teamGender = teamGenderRepository.findByTeamIdAndDeletedIsNull(teamId)
+            TeamGenderEntity teamGender = teamGenderRepository.findByTeamIdAndDeletedAtIsNull(teamId)
                     .orElseThrow(() -> new RuntimeException("Team not associated with a Gender"));
             teamGender.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             teamGenderRepository.save(teamGender);
 
-            TeamSubEntity teamSub = teamSubRepository.findByTeamIdAndDeletedIsNull(teamId)
+            TeamSubEntity teamSub = teamSubRepository.findByTeamIdAndDeletedAtIsNull(teamId)
                     .orElseThrow(() -> new RuntimeException("Team not associated with a Sub"));
             teamSub.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             teamSubRepository.save(teamSub);
@@ -243,12 +243,12 @@ public class TeamService {
                 throw new RuntimeException("Gender or Sub not found");
             }
 
-            TeamGenderEntity teamGender = teamGenderRepository.findByTeamIdAndDeletedIsNull(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
+            TeamGenderEntity teamGender = teamGenderRepository.findByTeamIdAndDeletedAtIsNull(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
             teamGender.setGenderId(teamDTO.getGenderId());
             teamGender.setCreatedBy(1);
             teamGenderRepository.save(teamGender);
 
-            TeamSubEntity teamSub = teamSubRepository.findByTeamIdAndDeletedIsNull(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
+            TeamSubEntity teamSub = teamSubRepository.findByTeamIdAndDeletedAtIsNull(teamId).orElseThrow(() -> new RuntimeException("Team not found"));
             teamSub.setSubId(teamDTO.getSubId());
             teamSub.setCreatedBy(1);
             teamSubRepository.save(teamSub);
