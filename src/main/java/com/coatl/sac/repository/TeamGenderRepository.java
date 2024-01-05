@@ -10,7 +10,7 @@ import com.coatl.sac.entity.TeamGenderEntity;
 @Repository
 public interface TeamGenderRepository extends JpaRepository<TeamGenderEntity, Integer> {
     
-    Optional<TeamGenderEntity> findByTeamIdAndDeletedIsNull(Integer teamId);
+    Optional<TeamGenderEntity> findByTeamIdAndDeletedAtIsNull(Integer teamId);
 
     Optional<TeamGenderEntity> findByTeamIdAndGenderId(Integer teamId, Integer genderId);
 
