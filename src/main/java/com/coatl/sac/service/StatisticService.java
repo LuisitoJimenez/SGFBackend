@@ -30,10 +30,10 @@ public class StatisticService {
     }
 
 
-    public List<Map<String, Object>> getStatisticByGame(Integer gameId) {
+/*     public List<Map<String, Object>> getStatisticByGame(Integer gameId) {
         List<Map<String, Object>> statistic = statisticRepository.getStatisticByGame(gameId);
         return statistic; 
-    }
+    } */
 
     
 }
