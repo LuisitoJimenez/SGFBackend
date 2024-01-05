@@ -2,7 +2,6 @@ package com.coatl.sac.repository;
 
 import java.util.List;
 import java.util.Map;
-//import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,44 +14,44 @@ import com.coatl.sac.entity.PlayerEntity;
 public interface PlayerRepository extends JpaRepository<PlayerEntity, Integer> {
 
        @Query(value = """
-              SELECT
-              player.id,
-              user.name,
-              user.id AS userId,
-              gender.id AS genderId,
-              JSON_UNQUOTE(JSON_EXTRACT(player.photo, '$[0].name')) AS photo,
-              player.identification,
-              player.birthplace,
-              player.birthday,
-              player.weight,
-              player.height
-          FROM users user
-          INNER JOIN users_players userPlayer ON user.id = userPlayer.user_id AND userPlayer.deleted IS NULL
-          INNER JOIN players player ON userPlayer.player_id = player.id
-          INNER JOIN players_genders playerGender ON player.id = playerGender.player_id AND playerGender.deleted IS NULL
-          INNER JOIN genders gender ON playerGender.gender_id = gender.id
-          WHERE user.deleted IS NULL AND player.deleted IS NULL;
-                                                 """, nativeQuery = true)
+                     SELECT p.id,
+                            user.name,
+                            user.id                                          AS userId,
+                            g.id                                             AS genderId,
+                            JSON_UNQUOTE(JSON_EXTRACT(p.photo, '$[0].name')) AS photo,
+                            p.identification,
+                            p.birthplace,
+                            p.birthday,
+                            p.weight,
+                            p.height
+                     FROM user user
+                              INNER JOIN user_player up ON user.id = up.user_id AND up.deleted_at IS NULL
+                              INNER JOIN player p ON up.player_id = p.id
+                              INNER JOIN player_gender pg ON p.id = pg.player_id AND pg.deleted_at IS NULL
+                              INNER JOIN gender g ON pg.gender_id = g.id
+                     WHERE user.deleted_at IS NULL
+                       AND p.deleted_at IS NULL
+                     """, nativeQuery = true)
        List<Map<String, Object>> getListPlayers();
 
        @Query(value = """
-                     SELECT
-                            player.id,
-                            user.name,
-                            gender.id AS genderId,
-                            player.photo,
-                            player.identification,
-                            player.birthplace,
-                            player.birthday,
-                            player.weight,
-                            player.height
-                     FROM users user
-                              INNER JOIN users_players userPlayer ON user.id = userPlayer.user_id AND userPlayer.deleted IS NULL
-                              INNER JOIN players player ON userPlayer.player_id = player.id
-                              INNER JOIN players_genders playerGender ON player.id = playerGender.player_id AND playerGender.deleted IS NULL
-                              INNER JOIN genders gender ON playerGender.gender_id = gender.id
-                     WHERE user.deleted IS NULL AND player.id = :pPlayerId
-                                    """, nativeQuery = true)
+                     SELECT p.id,
+                            u.name,
+                            g.id AS genderId,
+                            p.photo,
+                            p.identification,
+                            p.birthplace,
+                            p.birthday,
+                            p.weight,
+                            p.height
+                     FROM user u
+                              INNER JOIN user_player up ON u.id = up.user_id AND up.deleted_at IS NULL
+                              INNER JOIN player p ON up.player_id = p.id
+                              INNER JOIN player_gender pg ON p.id = pg.player_id AND pg.deleted_at IS NULL
+                              INNER JOIN gender g ON pg.gender_id = g.id
+                     WHERE u.deleted_at IS NULL
+                       AND p.id = :pPlayerId
+                                                  """, nativeQuery = true)
        Map<String, Object> getPlayerById(@Param("pPlayerId") Integer playerId);
 
 }
