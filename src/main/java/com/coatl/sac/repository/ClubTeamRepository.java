@@ -14,5 +14,5 @@ public interface ClubTeamRepository extends JpaRepository<ClubTeamEntity, Intege
 
     Optional<ClubTeamEntity> findByClubIdAndTeamId(Integer clubId, Integer teamId);
 
-    Optional<ClubTeamEntity> findByTeamIdAndDeletedIsNull(Integer teamId);
+    Optional<ClubTeamEntity> findByTeamIdAndDeletedAtIsNull(Integer teamId);
 }
