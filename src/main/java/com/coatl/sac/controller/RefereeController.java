@@ -56,6 +56,7 @@ public class RefereeController {
     }
 
     @PatchMapping("/{refereeId}")
+    @Operation(summary = "Update referee")
     public WebServiceResponse updateReferee(
         @PathVariable Integer refereeId,
         @RequestBody RefereeDTO refereeDto) {
@@ -64,6 +65,7 @@ public class RefereeController {
 
     
     @PostMapping(value ="/{refereeId}/image")
+    @Operation(summary = "Save image referee")
     public WebServiceResponse saveImageReferee(
         @PathVariable Integer refereeId,
         @RequestParam() MultipartFile file
@@ -71,7 +73,8 @@ public class RefereeController {
         return refereeService.saveImageReferee(refereeId, file);
     }
 
-    @GetMapping("/{refereeId}/image/{fileId}") 
+    @GetMapping("/{refereeId}/image/{fileId}")
+    @Operation(summary = "Get image referee") 
     public byte[] getImageReferee(
         @PathVariable Integer refereeId,
         @PathVariable String fileId
