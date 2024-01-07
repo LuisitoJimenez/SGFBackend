@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.coatl.sac.dto.WebServiceResponse;
+import com.coatl.sac.entity.FieldEntity;
+import com.coatl.sac.entity.FieldGameEntity;
 import com.coatl.sac.entity.GameEntity;
 import com.coatl.sac.entity.GameGenderEntity;
 import com.coatl.sac.entity.GameRefereeEntity;
@@ -21,6 +23,8 @@ import com.coatl.sac.entity.GenderEntity;
 import com.coatl.sac.entity.RefereeEntity;
 import com.coatl.sac.entity.SubEntity;
 import com.coatl.sac.model.GameDTO;
+import com.coatl.sac.repository.FieldGameRepository;
+import com.coatl.sac.repository.FieldRepository;
 import com.coatl.sac.repository.GameGenderRepository;
 import com.coatl.sac.repository.GameRefereeRepository;
 import com.coatl.sac.repository.GameRepository;
@@ -31,6 +35,7 @@ import com.coatl.sac.repository.RefereeRepository;
 import com.coatl.sac.repository.SubRepository;
 //import com.fasterxml.jackson.core.JsonProcessingException;
 //import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ctc.wstx.shaded.msv_core.grammar.xmlschema.Field;
 
 import jakarta.transaction.Transactional;
 //import lombok.extern.log4j.Log4j2;
@@ -62,6 +67,12 @@ public class GameService {
 
     @Autowired
     private GameRefereeRepository gameRefereeRepository;
+
+    @Autowired
+    private FieldGameRepository fieldGameRepository;
+
+    @Autowired
+    private FieldRepository fieldRepository;
 
     // private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -99,6 +110,14 @@ public class GameService {
             }
 
             saveGameReferee(game.getId(), gameDTO.getRefereeId());
+
+            Optional<FieldEntity> fieldGame = fieldRepository.findById(gameDTO.getFieldId());
+
+            if (!fieldGame.isPresent()) {
+                throw new RuntimeException("Field not found");
+            }
+
+            saveFieldGame(game.getId(), gameDTO.getFieldId());
 
             return new WebServiceResponse(true, "Game created");
 
@@ -163,6 +182,15 @@ public class GameService {
         return gameRefereeEntity;
     }
 
+    private FieldGameEntity saveFieldGame(Integer gameId, Integer fieldId) {
+        FieldGameEntity fieldGameEntity = new FieldGameEntity();
+        fieldGameEntity.setGameId(gameId);
+        fieldGameEntity.setFieldId(fieldId);
+        fieldGameEntity.setCreatedBy(1);
+        fieldGameRepository.save(fieldGameEntity);
+        return fieldGameEntity;
+    }
+
     @Transactional
     public WebServiceResponse deleteGame(Integer gameId) {
         try {
@@ -186,6 +214,11 @@ public class GameService {
                     .orElseThrow(() -> new RuntimeException("GameReferee not found"));
             gameReferee.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
             gameRefereeRepository.save(gameReferee);
+
+            FieldGameEntity fieldGame = fieldGameRepository.findByGameId(gameId)
+                    .orElseThrow(() -> new RuntimeException("FieldGame not found"));
+            fieldGame.setDeletedAt(Timestamp.valueOf(LocalDateTime.now()));
+            fieldGameRepository.save(fieldGame);
 
             return new WebServiceResponse(false, "Game deleted");
         } catch (Exception e) {
@@ -222,6 +255,12 @@ public class GameService {
             gameReferee.setCreatedBy(1);
             gameRefereeRepository.save(gameReferee);
 
+            FieldGameEntity fieldGame = fieldGameRepository.findByGameIdAndDeletedAtIsNull(gameId)
+                    .orElseThrow(() -> new RuntimeException("Game not found"));
+            fieldGame.setFieldId(gameDTO.getFieldId());
+            fieldGame.setCreatedBy(1);
+            fieldGameRepository.save(fieldGame);
+
             return new WebServiceResponse(true, "Game updated");
         } catch (Exception e) {
 
@@ -250,4 +289,6 @@ public class GameService {
             return new WebServiceResponse(false, e.getMessage());
         }
     }
+
+
 }
