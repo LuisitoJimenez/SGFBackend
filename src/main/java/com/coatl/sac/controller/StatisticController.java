@@ -12,6 +12,7 @@ import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.model.StatisticDTO;
 import com.coatl.sac.service.StatisticService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -23,6 +24,7 @@ public class StatisticController {
     private StatisticService statisticService;
     
     @PostMapping("")
+    @Operation(summary = "Create statistic")
     public WebServiceResponse createStatistic(
         @RequestBody StatisticDTO statisticDto
     ) {
