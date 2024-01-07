@@ -149,4 +149,5 @@ public class ClubService {
 
         return objectStorage.getFile(logoKey, bucketName);
     }
+    
 }
