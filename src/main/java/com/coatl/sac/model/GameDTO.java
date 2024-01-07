@@ -22,7 +22,7 @@ import lombok.Setter;
 public class GameDTO {
 
     private String name;
-    private String field;
+    private Integer fieldId;
     private Date gameDate;
     private Time gameTime;
     private Integer genderId;
