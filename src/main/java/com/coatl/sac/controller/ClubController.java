@@ -36,49 +36,46 @@ public class ClubController {
     @PostMapping("")
     @Operation(summary = "Create club")
     public WebServiceResponse createClub(
-        @RequestBody ClubDTO clubDto
-    ) {
+            @RequestBody ClubDTO clubDto) {
         return new WebServiceResponse(clubService.createClub(clubDto));
     }
 
     @PatchMapping("/{clubId}")
     @Operation(summary = "Update club")
     public WebServiceResponse updateClub(
-        @PathVariable Integer clubId,
-        @RequestBody ClubDTO clubDto
-    ) {
+            @PathVariable Integer clubId,
+            @RequestBody ClubDTO clubDto) {
         return clubService.updateClub(clubDto, clubId);
     }
 
     @GetMapping("/{clubId}")
     @Operation(summary = "Get club by id")
     public WebServiceResponse getClubId(
-        @PathVariable Integer clubId
-    ) {
+            @PathVariable Integer clubId) {
         return new WebServiceResponse(clubService.getClubById(clubId));
     }
 
     @DeleteMapping("/{clubId}")
-    @Operation(summary = "Delete club by id") 
+    @Operation(summary = "Delete club by id")
     public WebServiceResponse deleteClub(
-        @PathVariable Integer clubId
-    ){
-       return clubService.deleteClub(clubId); 
+            @PathVariable Integer clubId) {
+        return clubService.deleteClub(clubId);
     }
 
     @PostMapping(value = "/{clubId}")
+    @Operation(summary = "Save image club")
     public WebServiceResponse saveImagePlayer(
-        @PathVariable Integer clubId,
-        @RequestParam() MultipartFile file
-    ) {
+            @PathVariable Integer clubId,
+            @RequestParam() MultipartFile file) {
         return clubService.saveImageClub(clubId, file);
     }
 
     @GetMapping("/{clubId}/image/{fileId}")
+    @Operation(summary = "Get image club")
     public byte[] getImagePlayer(
-        @PathVariable Integer clubId,
-        @PathVariable String fileId
-    ) {
+            @PathVariable Integer clubId,
+            @PathVariable String fileId) {
         return clubService.getImageClub(clubId, fileId);
     }
+
 }
