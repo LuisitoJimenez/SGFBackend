@@ -32,18 +32,21 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
+    @Operation(summary = "Get user by id")
     public WebServiceResponse getUserById(
             @PathVariable Integer userId) {
         return new WebServiceResponse(userService.getUserById(userId));
     }
 
     @PostMapping("")
+    @Operation(summary = "Create user")
     public WebServiceResponse createUser(
             @RequestBody UserDTO UserDto) {
         return userService.createUser(UserDto);
     }
 
     @PatchMapping("/{userId}")
+    @Operation(summary = "Update user")
     public WebServiceResponse updateUser(
             @RequestBody UserDTO userDto,
             @PathVariable Integer userId) {
@@ -51,6 +54,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
+    @Operation(summary = "Delete user")
     public WebServiceResponse deleteUser(
             @PathVariable Integer userId) {
         return userService.deleteUser(userId);
