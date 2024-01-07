@@ -84,9 +84,9 @@ public class RefereeService {
          throw new RuntimeException("User already has a referee");
       }
 
-      if (userPlayerRepository.findById(userId).isPresent()) {
+/*       if (userRefereeRepository.findById(userId).isPresent()) {
          throw new RuntimeException("User already has a player");
-      }
+      } */
 
       RefereeEntity refereeEntity = new RefereeEntity();
       refereeEntity.setHeight(refereeDto.getHeight());
