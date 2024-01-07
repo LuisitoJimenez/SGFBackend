@@ -51,12 +51,14 @@ public class PlayerController {
     }
 
     @DeleteMapping("")
+    @Operation(summary = "Delete player")
     public WebServiceResponse deletePlayer(
             @RequestHeader Integer playerId) {
         return playerService.deletePlayer(playerId);
     }
 
-    @PatchMapping("") 
+    @PatchMapping("")
+    @Operation(summary = "Update player") 
     public WebServiceResponse updatePlayer(
             @RequestHeader Integer playerId,
             @RequestBody PlayerDTO playerDto
@@ -65,6 +67,7 @@ public class PlayerController {
     }
 
     @PostMapping(value ="/{playerId}")
+    @Operation(summary = "Save image player")
     public WebServiceResponse saveImagePlayer(
         @PathVariable Integer playerId,
         @RequestParam() MultipartFile file
@@ -72,7 +75,8 @@ public class PlayerController {
         return playerService.saveImagePlayer(playerId, file);
     }
 
-    @GetMapping("/{playerId}/image/{fileId}") 
+    @GetMapping("/{playerId}/image/{fileId}")
+    @Operation(summary = "Get image player") 
     public byte[] getImagePlayer(
         @PathVariable Integer playerId,
         @PathVariable String fileId
