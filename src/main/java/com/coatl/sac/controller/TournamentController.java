@@ -12,6 +12,7 @@ import com.coatl.sac.dto.WebServiceResponse;
 import com.coatl.sac.model.TournamentDTO;
 import com.coatl.sac.service.TournamentService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -23,6 +24,7 @@ public class TournamentController {
     private TournamentService tournamentService;
 
     @PostMapping("")
+    @Operation(summary = "Create tournament")
     public WebServiceResponse createTournament(
         @RequestBody TournamentDTO tournamentDto
     ) {
@@ -30,11 +32,13 @@ public class TournamentController {
     }
     
     @GetMapping("")
+    @Operation(summary = "Get tournament list")
     public WebServiceResponse getTournamentList() {
         return new WebServiceResponse(tournamentService.getTournamentList());
     }
 
     @PostMapping("/{tournamentId}/game/{gameId}")
+    @Operation(summary = "Add game to tournament")
     public WebServiceResponse addTeamToTournament(
         @PathVariable Integer tournamentId,
         @PathVariable Integer gameId
