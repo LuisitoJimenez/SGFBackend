@@ -74,8 +74,6 @@ public class GameService {
     @Autowired
     private FieldRepository fieldRepository;
 
-    // private ObjectMapper objectMapper = new ObjectMapper();
-
     @Transactional
     public WebServiceResponse createGame(GameDTO gameDTO) {
         try {
@@ -86,7 +84,6 @@ public class GameService {
             }
             GameEntity game = new GameEntity();
             game.setName(gameDTO.getName());
-            //game.setField(gameDTO.getField());
             game.setGameTime(gameDTO.getGameTime());
             game.setGameDate(gameDTO.getGameDate());
             game.setCreatedBy(1);
